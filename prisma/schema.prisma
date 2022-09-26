@@ -1,0 +1,43 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  STUDENT
+  HEADMAN
+  TEACHER
+  ADMIN
+}
+
+model User {
+  id        String    @id @default(uuid())
+  name      String    @db.VarChar(32)
+  lastName  String    @db.VarChar(32)
+  FIO       String    @db.VarChar(64)
+  birthday  DateTime?
+  email     String    @unique @db.VarChar(32)
+  group     String?   @db.VarChar(4)
+  password  String?   @db.VarChar(64)
+  code      String?   @db.VarChar(64)
+  role      UserRole  @default(STUDENT)
+  Group     Group?    @relation(fields: [group], references: [id], onDelete: SetNull)
+  createAt  DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@fulltext([FIO])
+}
+
+model Group {
+  id           String    @id @db.VarChar(4)
+  faculty      Int?      @db.SmallInt
+  foundingDate DateTime?
+  Strudents    User[]
+  createAt     DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
