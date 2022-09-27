@@ -6,12 +6,11 @@ interface IProps {
     fullname: string;
     birthday: string | null;
     email: string;
-    image: string;
     group: string | null;
     position: keyof typeof UserRoles;
 }
 
-export default function UserProfile({ fullname, birthday, position, email, image, group }: IProps) {
+export default function UserProfile({ fullname, birthday, position, email, group }: IProps) {
     return (
         <div className="bg-white rounded-lg p-6 shadow-md">
             <div className="flex space-x-6">
@@ -24,7 +23,7 @@ export default function UserProfile({ fullname, birthday, position, email, image
                         <div className={ `text-sm underline text-blue-700 font-bold` }>{ email }</div>
                     </div>
                 </div>
-                <img className="w-[120px] h-[120px] self-center rounded-full bg-grey" src={ image } alt="" />
+                <img className="w-[120px] h-[120px] self-center rounded-full bg-grey" src={process.env.PUBLIC_URL + `/static/images/${ position }.png`} alt="" />
             </div>
         </div>
     )

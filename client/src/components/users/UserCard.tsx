@@ -1,20 +1,22 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { UserRoles } from '../../types/api';
 
 interface IProps {
     id: string;
     FIO: string;
+    position: keyof typeof UserRoles;
     group: string | null;
     isEditable: boolean;
     isDeletable: boolean;
     onDelete: (id: string) => void
 }
 
-export default function UserCard({ id, FIO, group, isEditable, isDeletable, onDelete }: IProps) {
+export default function UserCard({ id, FIO, group, position, isEditable, isDeletable, onDelete }: IProps) {
     return (
         <div className="flex p-2 rounded-xl hover:bg-grey transition-colors">
             <Link to={ `/user/${ id }` } className="flex">
-                <img className="w-12 h-12 bg-grey rounded-full" src={process.env.PUBLIC_URL + "/static/images/profile.png"} alt="" />
+                <img className="w-12 h-12 bg-grey rounded-full" src={process.env.PUBLIC_URL + `/static/images/${ position }.png`} alt="" />
                 <div className="ml-4 flex flex-col justify-center">
                     <div className="font-bold text-xl">{FIO}</div>
                     <div className="text-tgrey">{ group === null ? `Нет группы` : `Группа ${group}` }</div>

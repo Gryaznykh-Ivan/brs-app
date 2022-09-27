@@ -29,7 +29,7 @@ export default function Users() {
     }
 
     const onSearch = (q: string) => {
-        setQuery(prev => ({ ...prev, q }))
+        setQuery(prev => ({ ...prev, q, skip: 0 }))
     }
 
     const onLoadMore = () => {
@@ -54,6 +54,7 @@ export default function Users() {
                         <UserCard
                             key={user.id}
                             id={user.id}
+                            position={user.role}
                             FIO={user.FIO}
                             group={user.group}
                             isDeletable={true}

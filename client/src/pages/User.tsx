@@ -18,7 +18,6 @@ export default function User() {
                 fullname={user.FIO}
                 birthday={user.birthday && new Date(user.birthday).toLocaleDateString()}
                 email={user.email}
-                image={process.env.PUBLIC_URL + "/static/images/profile.png"}
                 group={user.group}
                 position={user.role}
             />
