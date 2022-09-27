@@ -1,15 +1,28 @@
 
+export enum UserRoles {
+    STUDENT = "STUDENT",
+    HEADMAN = "HEADMAN",
+    TEACHER = "TEACHER",
+    ADMIN = "ADMIN"
+}
+
+export enum TranslatedUserRoles {
+    STUDENT = "Студент",
+    HEADMAN = "Староста",
+    TEACHER = "Учитель",
+    ADMIN = "Администратор"
+}
 
 export interface IUser {
     id: string;
     name: string;
     lastName: string;
-    birthday?: string;
+    FIO: string;
+    birthday: string | null;
     email: string;
-    group?: string;
-    role: string;
+    group: string | null;
+    role: keyof typeof UserRoles;
 }
-
 
 
 export interface IResponse<T> {
@@ -44,12 +57,45 @@ export interface IGetUserRequest {
     id: string;
 }
 
+export interface IGetUserSearchRequest {
+    q: string;
+    limit: number;
+    skip: number;
+}
+
+
 export interface IGeneralSettingsChangeRequest {
     name: string;
     lastName: string;
     email: string;
     group: string;
     birthday: string;
+}
+
+
+export interface IUserSettingsChangeRequest {
+    id: string;
+    name: string;
+    lastName: string;
+    email: string;
+    group: string;
+    birthday: string;
+    password: string;
+    role: keyof typeof UserRoles;
+}
+
+export interface ICreateUserRequest {
+    name: string;
+    lastName: string;
+    email: string;
+    group: string;
+    birthday: string;
+    password: string;
+    role: keyof typeof UserRoles;
+}
+
+export interface IRemoveUserRequest {
+    id: string;
 }
 
 export interface IPasswordChangeRequest {
@@ -75,7 +121,7 @@ export interface ISendVerificationCodeResponse {
     data: string;
 }
 
-export interface IAuthErrorResponse {
+export interface IErrorResponse {
     success: boolean;
     error: string;
 }
@@ -94,10 +140,27 @@ export interface IGetUserResponse {
     data: IUser;
 }
 
+export interface IGetUserSearchResponse {
+    success: boolean;
+    data: IUser[];
+}
+
 export interface IPasswordChangeResponse {
     success: boolean;
 }
 
 export interface IGeneralSettingsChangeResponse {
+    success: boolean;
+}
+
+export interface IUserSettingsChangeResponse {
+    success: boolean;
+}
+
+export interface ICreateUserResponse {
+    success: boolean;
+}
+
+export interface IRemoveUserResponse {
     success: boolean;
 }

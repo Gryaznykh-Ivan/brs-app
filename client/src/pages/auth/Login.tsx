@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useLoginMutation } from '../../services/authService';
-import { IAuthErrorResponse, ILoginRequest } from '../../types/api';
+import { IErrorResponse, ILoginRequest } from '../../types/api';
 
 export default function Login() {
     const navigate = useNavigate();
@@ -33,13 +33,13 @@ export default function Login() {
                 <div className="relative flex flex-col justify-center flex-1 pt-24 pb-10">
                     <div className="absolute inset-x-0 top-4 flex justify-center text-sm">
                         <div className="text-tgrey">Еще не зарегистрировался?</div>
-                        <Link to="/auth/register" className="text-red underline ml-2 font-bold">Зарегистрироваться</Link>
+                        <Link to="/auth/register" className="text-mred underline ml-2 font-bold">Зарегистрироваться</Link>
                     </div>
                     <div className="w-80 m-auto">
 
                         <div className="text-xl font-bold">Вход в систему</div>
                         <div className="flex space-x-3 mt-6">
-                            <Link to="/auth/loginThroughEmail" className="bg-grey text-red rounded-lg font-bold py-2 w-full text-center">Через email</Link>
+                            <Link to="/auth/loginThroughEmail" className="bg-grey text-mred rounded-lg font-bold py-2 w-full text-center">Через email</Link>
                         </div>
                         <div className="flex items-center mt-4">
                             <div className="h-px bg-grey flex-1"></div>
@@ -58,9 +58,9 @@ export default function Login() {
                                 <input type="password" name="password" className="bg-grey rounded-lg p-2 outline-none" autoComplete="current-password" value={ loginData.password } onChange={onInputChange} />
                             </div>
                             { (error && "status" in error) && 
-                                <div className="text-red font-semibold">{ (error.data as IAuthErrorResponse).error }</div>
+                                <div className="text-mred font-semibold">{ (error.data as IErrorResponse).error }</div>
                             }
-                            <button className="bg-red text-white rounded-lg py-2 w-2/3 font-bold">Войти</button>
+                            <button className="bg-mred text-white rounded-lg py-2 w-2/3 font-bold">Войти</button>
                         </form>
                     </div>
                 </div>

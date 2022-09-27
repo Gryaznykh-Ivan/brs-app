@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRegisterMutation } from '../../services/authService';
-import { IAuthErrorResponse, IRegisterRequest } from '../../types/api'
+import { IErrorResponse, IRegisterRequest } from '../../types/api'
 
 export default function Register() {
     const navigate = useNavigate();
@@ -39,7 +39,7 @@ export default function Register() {
                 <div className="relative flex flex-col justify-center flex-1 pt-24 pb-10">
                     <div className="absolute inset-x-0 top-4 flex justify-center text-sm">
                         <div className="text-tgrey">Есть аккаунт?</div>
-                        <Link to="/auth/login" className="text-red underline ml-2 font-bold">Войти</Link>
+                        <Link to="/auth/login" className="text-mred underline ml-2 font-bold">Войти</Link>
                     </div>
                     <div className="w-80 m-auto">
                         <div className="text-xl font-bold">Регистрация</div>
@@ -96,12 +96,12 @@ export default function Register() {
                                     </svg>
                                     <label className="font-bold ml-2 text-sm" htmlFor="">Пароль</label>
                                 </div>
-                                <input type="password" className="bg-grey rounded-lg p-2 outline-none" autoComplete="new-password" name="password" onChange={ onInputChange } value={ registerData.password } />
+                                <input type="password" className="bg-grey rounded-lg p-2 outline-none" autoComplete="new-password" name="password" placeholder="Пароль" onChange={ onInputChange } value={ registerData.password } />
                             </div>
                             { (error && "status" in error) &&
-                                <div className="text-red font-semibold">{ (error.data as IAuthErrorResponse).error }</div>
+                                <div className="text-mred font-semibold">{ (error.data as IErrorResponse).error }</div>
                             }
-                            <button className=" bg-red text-white rounded-lg py-2 w-2/3 font-bold">Регистрация</button>
+                            <button className=" bg-mred text-white rounded-lg py-2 w-2/3 font-bold">Регистрация</button>
                         </form>
                     </div>
                 </div>

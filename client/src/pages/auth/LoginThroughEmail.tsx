@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSendVerificationCodeMutation } from '../../services/authService';
-import { IAuthErrorResponse, ISendVerificationCodeRequest } from '../../types/api';
+import { IErrorResponse, ISendVerificationCodeRequest } from '../../types/api';
 
 export default function Login() {
     const navigate = useNavigate();
@@ -32,7 +32,7 @@ export default function Login() {
                 <div className="relative flex flex-col justify-center flex-1 pt-24 pb-10">
                     <div className="absolute inset-x-0 top-4 flex justify-center text-sm">
                         <div className="text-tgrey">Еще не зарегистрировался?</div>
-                        <Link to="/auth/register" className="text-red underline ml-2 font-bold">Зарегистрироваться</Link>
+                        <Link to="/auth/register" className="text-mred underline ml-2 font-bold">Зарегистрироваться</Link>
                     </div>
                     <div className="w-80 m-auto">
 
@@ -43,9 +43,9 @@ export default function Login() {
                                 <input type="text" name="email" className="bg-grey rounded-lg p-2 outline-none" autoComplete="email" value={sendVerificationCodeData.email} onChange={onInputChange} />
                             </div>
                             { (error && "status" in error) && 
-                                <div className="text-red font-semibold">{ (error.data as IAuthErrorResponse).error }</div>
+                                <div className="text-mred font-semibold">{ (error.data as IErrorResponse).error }</div>
                             }
-                            <button className="bg-red text-white rounded-lg py-2 w-2/3 font-bold">Войти</button>
+                            <button className="bg-mred text-white rounded-lg py-2 w-2/3 font-bold">Войти</button>
                         </form>
                     </div>
                 </div>

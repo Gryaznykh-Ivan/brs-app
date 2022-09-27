@@ -1,3 +1,9 @@
+export enum UserRoles {
+    STUDENT = "STUDENT",
+    HEADMAN = "HEADMAN",
+    TEACHER = "TEACHER",
+    ADMIN = "ADMIN"
+}
 
 export type LoginThroughEmailRequest = {
     email: string;
@@ -39,6 +45,32 @@ export type GetByIdRequest = {
     id: string;
 }
 
-export type GetByNameRequest = {
-    q: string;
+export type CreateUserRequest = {
+    email: string;
+    password: string;
+    birthday: string;
+    name: string;
+    lastName : string;
+    group: string;
+    role: keyof typeof UserRoles;
+}
+
+export type ChangeUserRequest = {
+    email: string;
+    password: string;
+    birthday: string;
+    name: string;
+    lastName : string;
+    group: string;
+    role: keyof typeof UserRoles;
+}
+
+export type IdParamsRequest = {
+    id: string;
+}
+
+export type GetBySearchRequest = {
+    q?: string;
+    limit?: string;
+    skip?: string;
 }

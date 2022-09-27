@@ -4,7 +4,7 @@ import auth from '../controllers/auth'
 const router = new Router().prefix('/auth');
 
 router.post('/login', auth.login);
-router.post('/register', auth.register);
+router.put('/register', auth.register);
 router.post('/loginThroughEmail', auth.loginThroughEmail);
 router.post('/sendVerificationCode', auth.sendVerificationCode);
 

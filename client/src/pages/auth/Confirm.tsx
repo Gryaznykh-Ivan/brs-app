@@ -4,7 +4,7 @@ import { useAppSelector } from '../../hooks/store'
 import { useRefs } from '../../hooks/useRefs';
 import { useTimer } from '../../hooks/useTimer';
 import { useLoginThroughEmailMutation, useSendVerificationCodeMutation } from '../../services/authService';
-import { IAuthErrorResponse } from '../../types/api';
+import { IErrorResponse } from '../../types/api';
 import { AUTH_VERIFYING } from '../../types/store'
 
 interface ICellField {
@@ -109,10 +109,10 @@ export default function Confirm() {
                             )}
                         </div>
                         {(loginError && "status" in loginError) &&
-                            <div className="text-red font-semibold">{(loginError.data as IAuthErrorResponse).error}</div>
+                            <div className="text-mred font-semibold">{(loginError.data as IErrorResponse).error}</div>
                         }
-                        {count !== 0 && <div className="text-tblack">Запросить код повторно можно через <span className="text-red">{count}</span> секунд</div>}
-                        <button className={`bg-${isSendAgainAvailable ? "red" : "grey"} text-${isSendAgainAvailable ? "white" : "tgrey"} font-bold rounded-lg py-2 w-2/3`} disabled={!isSendAgainAvailable} onClick={onSendCodeAgain}>Отправить повторно</button>
+                        {count !== 0 && <div className="text-tblack">Запросить код повторно можно через <span className="text-mred">{count}</span> секунд</div>}
+                        <button className={`bg-${isSendAgainAvailable ? "mred" : "grey"} text-${isSendAgainAvailable ? "white" : "tgrey"} font-bold rounded-lg py-2 w-2/3`} disabled={!isSendAgainAvailable} onClick={onSendCodeAgain}>Отправить повторно</button>
                     </div>
                 </div>
             </div>

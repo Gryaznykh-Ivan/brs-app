@@ -1,16 +1,19 @@
-import UserProfile from '../components/users/UserProfile'
-import { useAppSelector } from '../hooks/store';
-import { useGetUserQuery } from '../services/userService'
+import React from 'react'
+import { useParams } from 'react-router-dom';
+import BackBlock from '../components/BackBlock';
+import UserProfile from '../components/users/UserProfile';
+import { useGetUserQuery } from '../services/userService';
 
-export default function Index() {
-    const { payload } = useAppSelector(state => state.auth);
-    const { data } = useGetUserQuery({ id: payload?.id as string });
+export default function User() {
+    const { id } = useParams()
+    const { data } = useGetUserQuery({ id: id || "" });
     if (data === undefined) return <></>
 
     const { data: user } = data;
 
     return (
         <div className="flex-1 space-y-4">
+            <BackBlock />
             <UserProfile
                 fullname={user.FIO}
                 birthday={user.birthday && new Date(user.birthday).toLocaleDateString()}

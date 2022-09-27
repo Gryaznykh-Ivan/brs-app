@@ -5,6 +5,9 @@ import {
 } from "react-router-dom";
 
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 import ScaleLoader from 'react-spinners/ScaleLoader'
 
 import IndexTemplate from './templates/Index'
@@ -17,15 +20,19 @@ import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import Confirm from './pages/auth/Confirm';
 import Index from './pages/Index';
-import NotFound from './pages/NotFound';
+import NotFound from './components/NotFound';
 import LoginThroughEmail from './pages/auth/LoginThroughEmail';
 import PrivateRoute from './common/PrivateRoute';
 import Logout from './common/Logout';
 
 import { useAppSelector } from './hooks/store';
 
-import 'react-toastify/dist/ReactToastify.css';
 import Settings from './pages/Settings';
+import Developing from './components/Developing';
+import Users from './pages/admin/Users';
+import UserCreate from './pages/admin/UserCreate';
+import UserSettings from './pages/admin/UserSettings';
+import User from './pages/User';
 
 function App() {
     const isLoading = useAppSelector(state => state.loader.isLoading)
@@ -58,11 +65,27 @@ function App() {
             <Routes>
                 <Route path="/" element={<IndexTemplate />}>
                     <Route path="/" element={<PrivateRoute outlet={<Index />} />} />
-                    <Route path="group" element={<PrivateRoute outlet={<NotFound />} />} />
-                    <Route path="brs" element={<PrivateRoute outlet={<NotFound />} />} />
-                    <Route path="schedule" element={<PrivateRoute outlet={<NotFound />} />} />
+
+                    <Route path="user/:id" element={<PrivateRoute outlet={<User />} />} />
+
+                    {/* STUDENTS ROUTES */}
+                    <Route path="group" element={<PrivateRoute allowedRoles={["STUDENT", "HEADMAN"]} outlet={<Developing />} />} />
+                    <Route path="brs" element={<PrivateRoute allowedRoles={["STUDENT", "HEADMAN"]} outlet={<Developing />} />} />
+                    <Route path="schedule" element={<PrivateRoute allowedRoles={["STUDENT", "HEADMAN"]} outlet={<Developing />} />} />
+
+                    {/* TEACHER ROUTES */}
+                    <Route path="brs" element={<PrivateRoute allowedRoles={["TEACHER"]} outlet={<Developing />} />} />
+
+                    {/* ADMIN ROUTES */}
+                    <Route path="users" element={<PrivateRoute allowedRoles={["ADMIN"]} outlet={<Users />} />} />
+                    <Route path="users/create" element={<PrivateRoute allowedRoles={["ADMIN"]} outlet={<UserCreate />} />} />
+                    <Route path="users/:id" element={<PrivateRoute allowedRoles={["ADMIN"]} outlet={<UserSettings />} />} />
+                    <Route path="groups" element={<PrivateRoute allowedRoles={["ADMIN"]} outlet={<Developing />} />} />
+
                     <Route path="settings" element={<PrivateRoute outlet={<Settings />} />} />
-                    <Route path="logout" element={<PrivateRoute outlet={<NotFound />} />} />
+
+
+                    
                 </Route>
                 <Route path="/intro" element={<EmptyTemplate />}>
                     <Route path="" element={<Intro />} />

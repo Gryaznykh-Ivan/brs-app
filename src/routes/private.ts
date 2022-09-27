@@ -1,9 +1,14 @@
 import Router from 'koa-router'
-import userController from '../controllers/user'
+import adminController from '../controllers/admin'
+import roleFilter from '../middlewares/roleFilter';
 
-const router = new Router();
+const router = new Router().prefix("/admin");
 
-router.post("/settings/changeGeneral", userController.generalSettingsChange);
-router.post("/settings/changePassword", userController.changePassword);
+// Admin settings
+
+router.put("/createUser", roleFilter("ADMIN"), adminController.createUser);
+router.post("/changeUserSettings/:id", roleFilter("ADMIN"), adminController.changeUserSettings);
+router.delete("/removeUser/:id", roleFilter("ADMIN"), adminController.removeUser);
+
 
 export default router.routes();

@@ -3,7 +3,7 @@ import { Context } from 'koa'
 import bcrypt from 'bcrypt'
 import validator from 'validator'
 import prisma from '../db'
-import { ChangePasswordRequest, GeneralSettingsChangeRequest, GetByIdRequest, GetByNameRequest } from '../types/requestTypes'
+import { ChangePasswordRequest, GeneralSettingsChangeRequest, GetByIdRequest, GetBySearchRequest } from '../types/requestTypes'
 import { BadRequest, Ok, Unauthorized } from '../utils/response'
 
 const getById = async (ctx: Context) => {
@@ -17,6 +17,7 @@ const getById = async (ctx: Context) => {
     return Ok(ctx, {
         id: user.id,
         name: user.name,
+        FIO: user.FIO,
         lastName: user.lastName,
         birthday: user.birthday,
         email: user.email,
@@ -25,14 +26,26 @@ const getById = async (ctx: Context) => {
     });
 }
 
-const getByName = async (ctx: Context) => {
-    const { q } = <GetByNameRequest>ctx.query;
+const getBySearch = async (ctx: Context) => {
+    const { q = "", limit = 10, skip = 0 } = <GetBySearchRequest>ctx.query;
 
     const users = await prisma.user.findMany({
+        skip: Number(skip),
+        take: Number(limit),
         where: {
             FIO: {
-                search: q
+                search: q.length > 0 ? q : undefined
             }
+        },
+        select: {
+            id: true,
+            name: true,
+            FIO: true,
+            lastName: true,
+            birthday: true,
+            email: true,
+            group: true,
+            role: true
         }
     })
 
@@ -62,7 +75,7 @@ const generalSettingsChange = async (ctx: Context) => {
         return Unauthorized(ctx, "Произошла ошибка. Метод доступен только авторизированным пользователям");
     }
 
-    const userGroup = await prisma.group.findFirst({ where: { id: group }})
+    const userGroup = await prisma.group.findFirst({ where: { id: group } })
     if (userGroup === null) {
         return BadRequest(ctx, "Указанной группы пока нет в базе данных. Обратитесь к администратору")
     }
@@ -132,7 +145,7 @@ const changePassword = async (ctx: Context) => {
 
 export = {
     getById,
-    getByName,
+    getBySearch,
     generalSettingsChange,
     changePassword
 }

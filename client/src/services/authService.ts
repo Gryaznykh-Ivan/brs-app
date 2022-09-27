@@ -13,7 +13,7 @@ export const authService = appApi.injectEndpoints({
         register: bulider.mutation<IRegisterResponse, IRegisterRequest>({
             query: (credentials) => ({
                 url: "auth/register",
-                method: "POST",
+                method: "PUT",
                 body: credentials
             })
         }),

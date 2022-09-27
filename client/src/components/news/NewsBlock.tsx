@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 
-interface Props {
+interface IProps {
     owner: {
         name: string;
         image?: string;
@@ -14,7 +14,7 @@ interface Props {
     tickers?: Array<JSX.Element>
 }
 
-export default function NewsBlock({ owner, title, content, tickers }: Props) {
+export default function NewsBlock({ owner, title, content, tickers }: IProps) {
     return (
         <div className="bg-white rounded-lg p-6 divide-y-[1px]">
             <div className="space-y-4 mb-4">

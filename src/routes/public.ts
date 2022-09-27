@@ -8,9 +8,11 @@ const router = new Router();
 // router.get("/user/:id", roleFilter("ADMIN"), userController.getById); 
 
 // UserController
+router.get("/user/search", userController.getBySearch);
 router.get("/user/:id", userController.getById);
-router.get("/user/search", userController.getByName);
 
+router.post("/settings/changeGeneral", userController.generalSettingsChange);
+router.post("/settings/changePassword", userController.changePassword);
 
 
 export default router.routes();

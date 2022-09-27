@@ -1,14 +1,28 @@
 import { appApi } from "../store/reducers/appApi";
-import { IGeneralSettingsChangeRequest, IGeneralSettingsChangeResponse, IGetUserRequest, IGetUserResponse, IPasswordChangeRequest, IPasswordChangeResponse } from "../types/api";
+import {
+    ICreateUserRequest, ICreateUserResponse, IGeneralSettingsChangeRequest,
+    IGeneralSettingsChangeResponse, IGetUserRequest, IGetUserResponse,
+    IGetUserSearchRequest, IGetUserSearchResponse, IPasswordChangeRequest,
+    IPasswordChangeResponse, IRemoveUserRequest, IRemoveUserResponse,
+    IUserSettingsChangeRequest, IUserSettingsChangeResponse
+} from "../types/api";
 
 export const userService = appApi.injectEndpoints({
     endpoints: bulider => ({
         getUser: bulider.query<IGetUserResponse, IGetUserRequest>({
             query: ({ id }) => ({
-                url: `user/${ id }`,
+                url: `user/${id}`,
                 method: "GET",
             }),
             providesTags: ["User"]
+        }),
+        getUserSearch: bulider.query<IGetUserSearchResponse, IGetUserSearchRequest>({
+            query: (credentials) => ({
+                url: `user/search`,
+                method: "GET",
+                params: credentials
+            }),
+            providesTags: ['Users'],
         }),
         changeGeneralSettings: bulider.mutation<IGeneralSettingsChangeResponse, IGeneralSettingsChangeRequest>({
             query: (credential) => ({
@@ -24,12 +38,40 @@ export const userService = appApi.injectEndpoints({
                 method: "POST",
                 body: credential
             })
-        })
+        }),
+        // admin routes
+        createUser: bulider.mutation<ICreateUserResponse, ICreateUserRequest>({
+            query: (credential) => ({
+                url: `admin/createUser`,
+                method: "PUT",
+                body: credential
+            })
+        }),
+        changeUserSettings: bulider.mutation<IUserSettingsChangeResponse, IUserSettingsChangeRequest>({
+            query: ({ id, ...credential }) => ({
+                url: `admin/changeUserSettings/${id}`,
+                method: "POST",
+                body: credential
+            }),
+            invalidatesTags: ["User"]
+        }),
+        removeUser: bulider.mutation<IRemoveUserResponse, IRemoveUserRequest>({
+            query: ({ id }) => ({
+                url: `admin/removeUser/${id}`,
+                method: "DELETE"
+            }),
+            invalidatesTags: ["Users"]
+        }),
     })
 })
 
 export const {
     useGetUserQuery,
+    useGetUserSearchQuery,
+    useLazyGetUserSearchQuery,
     useChangeGeneralSettingsMutation,
-    useChangePasswordMutation
+    useChangePasswordMutation,
+    useChangeUserSettingsMutation,
+    useCreateUserMutation,
+    useRemoveUserMutation
 } = userService

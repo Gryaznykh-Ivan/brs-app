@@ -29,14 +29,13 @@ module.exports = {
     extend: {
       colors: {
         'bg': '#F5F5F5',
-        'red': '#67000A',
+        'mred': '#67000A',
         'tred': '#FF3131',
         'lgreen': '#F0FCF4',
         'tgreen': '#30B656',
         'grey': '#EEF3F5',
         'tgrey': '#848E94',
         'tblack': '#262F35',
-        'blue': '#005BC7',
         'blue2': '#4695DD',
         'black': '#1D1D1D'
       },

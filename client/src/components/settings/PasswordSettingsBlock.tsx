@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import { useChangePasswordMutation } from '../../services/userService';
-import { IAuthErrorResponse } from '../../types/api';
+import { IErrorResponse } from '../../types/api';
 
 interface IPasswordChangeData {
     newPassword0: string;
@@ -41,7 +41,7 @@ export default function PasswordSettingsBlock() {
 
     return (
         <div className="flex-1">
-            <div className="relative bg-white rounded-lg p-6 divide-y-[1px] shadow-lg">
+            <div className="relative bg-white rounded-lg p-6 divide-y-[1px] shadow-md">
                 <div className="space-y-4 mb-4">
                     <div className="text-2xl font-bold">Управление паролем</div>
 
@@ -73,14 +73,14 @@ export default function PasswordSettingsBlock() {
                     </div>
                     <div className="ml-1 text-tgrey font-semibold text-sm">Формат пароля: Минимальная длина 8. Минимум 1 буква в нижнем регистре. Минимум 1 буква в верхнем регистре. Минимум 1 символ. Минимум 1 число.</div>
                     {(!isPasswordDataEmpty && !isPasswordsEqual) &&
-                        <div className="ml-1 text-red font-semibold text-sm">Пароли не совпадают</div>
+                        <div className="ml-1 text-mred font-semibold text-sm">Пароли не совпадают</div>
                     }
                     {(error && "status" in error) &&
-                        <div className="text-red font-semibold">{(error.data as IAuthErrorResponse).error}</div>
+                        <div className="text-mred font-semibold">{(error.data as IErrorResponse).error}</div>
                     }
                 </div>
                 <div className="flex h-8 pt-4 box-content">
-                    <button className={`bg-${isButtonActive ? "red" : "grey"} rounded-lg text-${isButtonActive ? "white" : "tgrey"} font-bold px-3 text-sm`} disabled={!isButtonActive} onClick={onChangePassword}>Применить</button>
+                    <button className={`bg-${isButtonActive ? "mred" : "grey"} rounded-lg text-${isButtonActive ? "white" : "tgrey"} font-bold px-3 text-sm`} disabled={!isButtonActive} onClick={onChangePassword}>Применить</button>
                 </div>
             </div>
         </div >

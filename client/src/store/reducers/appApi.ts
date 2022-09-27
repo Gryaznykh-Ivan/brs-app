@@ -6,7 +6,6 @@ import {
     FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react'
 import { RootState } from '..'
-import { logout } from './authSlice';
 
 const baseQuery = fetchBaseQuery({
     baseUrl: 'http://localhost:2000/',
@@ -38,7 +37,7 @@ const baseQueryWithLogic: BaseQueryFn<
 export const appApi = createApi({
     reducerPath: 'appApi',
     baseQuery: baseQueryWithLogic,
-    tagTypes: ['User'],
+    tagTypes: ['Profile', 'User', 'Users'],
     endpoints: (builder) => ({}),
 })
 

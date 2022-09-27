@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify';
 import { useAppSelector } from '../../hooks/store';
 import { useChangeGeneralSettingsMutation, useGetUserQuery } from '../../services/userService';
-import { IAuthErrorResponse, IGeneralSettingsChangeRequest } from '../../types/api';
+import { IErrorResponse, IGeneralSettingsChangeRequest } from '../../types/api';
 
 export default function GeneralSettingsBlock() {
     const { payload } = useAppSelector(state => state.auth);
@@ -55,7 +55,7 @@ export default function GeneralSettingsBlock() {
 
     return (
         <div className="flex-1">
-            <div className="relative bg-white rounded-lg p-6 divide-y-[1px] shadow-lg">
+            <div className="relative bg-white rounded-lg p-6 divide-y-[1px] shadow-md">
                 <div className="space-y-4 mb-4">
                     <div className="text-2xl font-bold">Общие настройки</div>
 
@@ -92,11 +92,11 @@ export default function GeneralSettingsBlock() {
                         </div>
                     </div>
                     {(error && "status" in error) &&
-                        <div className="text-red font-semibold">{(error.data as IAuthErrorResponse).error}</div>
+                        <div className="text-mred font-semibold">{(error.data as IErrorResponse).error}</div>
                     }
                 </div>
                 <div className="flex h-8 pt-4 box-content">
-                    <button className={`bg-${isButtonActive ? "red" : "grey"} rounded-lg text-${isButtonActive ? "white" : "tgrey"} font-bold px-3 text-sm`} disabled={!isButtonActive} onClick={onChangeGeneralSettings}>Применить</button>
+                    <button className={`bg-${isButtonActive ? "mred" : "grey"} rounded-lg text-${isButtonActive ? "white" : "tgrey"} font-bold px-3 text-sm`} disabled={!isButtonActive} onClick={onChangeGeneralSettings}>Применить</button>
                 </div>
             </div>
         </div >

@@ -25,9 +25,9 @@ export default function Intro() {
                 <h2 className="text-2xl font-bold">Для продолжения работы с системой необходимо авторизоваться</h2>
                 <div className="text-xl text-tgrey">Выберите один из предложенных вариантов</div>
                 <div className="flex h-12 space-x-8 justify-center items-center">
-                    <Link to="/auth/login" className="flex flex-col justify-center bg-red text-white text-xl w-48 rounded-xl h-full">Войти</Link>
+                    <Link to="/auth/login" className="flex flex-col justify-center bg-mred text-white text-xl w-48 rounded-xl h-full">Войти</Link>
                     <div>ИЛИ</div>
-                    <Link to="/auth/register" className="flex flex-col justify-center bg-red text-white text-xl w-48 rounded-xl h-full">Зарегистрироваться</Link>
+                    <Link to="/auth/register" className="flex flex-col justify-center bg-mred text-white text-xl w-48 rounded-xl h-full">Зарегистрироваться</Link>
                 </div>
             </div>
         </>
