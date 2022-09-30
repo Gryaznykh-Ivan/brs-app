@@ -10,6 +10,9 @@
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "build": "tsc -p ."
   },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
