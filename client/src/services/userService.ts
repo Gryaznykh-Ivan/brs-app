@@ -42,14 +42,14 @@ export const userService = appApi.injectEndpoints({
         // admin routes
         createUser: bulider.mutation<ICreateUserResponse, ICreateUserRequest>({
             query: (credential) => ({
-                url: `admin/createUser`,
+                url: `createUser`,
                 method: "PUT",
                 body: credential
             })
         }),
         changeUserSettings: bulider.mutation<IUserSettingsChangeResponse, IUserSettingsChangeRequest>({
             query: ({ id, ...credential }) => ({
-                url: `admin/changeUserSettings/${id}`,
+                url: `changeUserSettings/${id}`,
                 method: "POST",
                 body: credential
             }),
@@ -57,7 +57,7 @@ export const userService = appApi.injectEndpoints({
         }),
         removeUser: bulider.mutation<IRemoveUserResponse, IRemoveUserRequest>({
             query: ({ id }) => ({
-                url: `admin/removeUser/${id}`,
+                url: `removeUser/${id}`,
                 method: "DELETE"
             }),
             invalidatesTags: ["Users"]

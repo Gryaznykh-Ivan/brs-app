@@ -1,18 +1,15 @@
 import Router from 'koa-router'
 import userController from '../controllers/user'
-import roleFilter from '../middlewares/roleFilter';
+import groupController from '../controllers/group'
 
 const router = new Router();
 
-// An instance of using roleFilter on specific route
-// router.get("/user/:id", roleFilter("ADMIN"), userController.getById); 
-
-// UserController
-router.get("/user/search", userController.getBySearch);
-router.get("/user/:id", userController.getById);
+router.get("/user/search", userController.getUsersBySearch);
+router.get("/user/:id", userController.getUserById);
 
 router.post("/settings/changeGeneral", userController.generalSettingsChange);
 router.post("/settings/changePassword", userController.changePassword);
 
+router.get("/group/:id", groupController.getGroupById);
 
 export default router.routes();

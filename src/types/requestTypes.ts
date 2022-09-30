@@ -65,6 +65,12 @@ export type ChangeUserRequest = {
     role: keyof typeof UserRoles;
 }
 
+export type ChangeGroupRequest = {
+    id: string;
+    faculty: number;
+    foundingDate: string;
+}
+
 export type IdParamsRequest = {
     id: string;
 }
@@ -73,4 +79,12 @@ export type GetBySearchRequest = {
     q?: string;
     limit?: string;
     skip?: string;
+}
+
+export type AddStudentToGroup = {
+    id: string;
+}
+
+export type RemoveStudentFromGroup = {
+    id: string;
 }

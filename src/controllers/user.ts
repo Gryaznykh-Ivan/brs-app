@@ -6,7 +6,7 @@ import prisma from '../db'
 import { ChangePasswordRequest, GeneralSettingsChangeRequest, GetByIdRequest, GetBySearchRequest } from '../types/requestTypes'
 import { BadRequest, Ok, Unauthorized } from '../utils/response'
 
-const getById = async (ctx: Context) => {
+const getUserById = async (ctx: Context) => {
     const { id } = <GetByIdRequest>ctx.params;
 
     const user = await prisma.user.findFirst({ where: { id } })
@@ -26,7 +26,7 @@ const getById = async (ctx: Context) => {
     });
 }
 
-const getBySearch = async (ctx: Context) => {
+const getUsersBySearch = async (ctx: Context) => {
     const { q = "", limit = 10, skip = 0 } = <GetBySearchRequest>ctx.query;
 
     const users = await prisma.user.findMany({
@@ -63,7 +63,7 @@ const generalSettingsChange = async (ctx: Context) => {
     }
 
     if (!validator.isDate(birthday)) {
-        return BadRequest(ctx, "Дата рождения указан неверно");
+        return BadRequest(ctx, "Дата рождения указана неверно");
     }
 
     if (validator.isEmpty(name) || validator.isEmpty(lastName)) {
@@ -144,8 +144,8 @@ const changePassword = async (ctx: Context) => {
 
 
 export = {
-    getById,
-    getBySearch,
+    getUserById,
+    getUsersBySearch,
     generalSettingsChange,
     changePassword
 }

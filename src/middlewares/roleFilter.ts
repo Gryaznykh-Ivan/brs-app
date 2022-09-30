@@ -2,14 +2,14 @@ import jwt from 'jsonwebtoken';
 import { Context, Next } from 'koa';
 import { BadRequest, NotFound } from '../utils/response'
 
-export default (role: string) => {
+export default (roles: string[]) => {
     return async (ctx: Context, next: Next) => {
         try {
             if (ctx.request.user === undefined) {
                 return ctx.throw(401, "Token was not provided");
             }
     
-            if (ctx.request.user.role !== role) {
+            if (roles.includes(ctx.request.user.role) === false) {
                 return ctx.throw(403, "Forbidden");
             }
     
