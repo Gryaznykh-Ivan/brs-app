@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 import { Context, Next } from 'koa';
-import { BadRequest, NotFound } from '../utils/response'
+import { UserRoles } from '../types/requestTypes';
 
-export default (roles: string[]) => {
+export default (roles: (keyof typeof UserRoles)[]) => {
     return async (ctx: Context, next: Next) => {
         try {
             if (ctx.request.user === undefined) {
