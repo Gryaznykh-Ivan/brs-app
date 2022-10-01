@@ -48,7 +48,7 @@ export default function Users() {
                 onSearch={onSearch}
             />
             {data && <>
-                <div className="bg-white rounded-lg p-4 shadow-md gap-2">
+                <div className="bg-white rounded-lg p-4 shadow-md space-y-2">
                     {data.data.length === 0 && <div className="text-xl text-center">По вашему запросу ничего не найдено</div>}
                     {data.data.map(user =>
                         <UserCard

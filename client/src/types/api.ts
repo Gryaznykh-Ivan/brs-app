@@ -24,6 +24,20 @@ export interface IUser {
     role: keyof typeof UserRoles;
 }
 
+export interface IGroupCard {
+    id: string;
+    faculty: string;
+    foundingDate: string;
+    studentsCount: number;
+}
+
+export interface IGroup {
+    id: string;
+    faculty: string;
+    foundingDate: string;
+    students: IUser[]
+}
+
 
 export interface IResponse<T> {
     success: boolean;
@@ -53,11 +67,21 @@ export interface ISendVerificationCodeRequest {
     email: string;
 }
 
-export interface IGetUserRequest {
+export interface IUserGetRequest {
     id: string;
 }
 
-export interface IGetUserSearchRequest {
+export interface IUserGetSearchRequest {
+    q: string;
+    limit: number;
+    skip: number;
+}
+
+export interface IGroupGetRequest {
+    id: string;
+}
+
+export interface IGroupGetSearchRequest {
     q: string;
     limit: number;
     skip: number;
@@ -84,7 +108,7 @@ export interface IUserSettingsChangeRequest {
     role: keyof typeof UserRoles;
 }
 
-export interface ICreateUserRequest {
+export interface IUserCreateRequest {
     name: string;
     lastName: string;
     email: string;
@@ -94,7 +118,7 @@ export interface ICreateUserRequest {
     role: keyof typeof UserRoles;
 }
 
-export interface IRemoveUserRequest {
+export interface IUserRemoveRequest {
     id: string;
 }
 
@@ -102,6 +126,33 @@ export interface IPasswordChangeRequest {
     oldPassword: string;
     newPassword: string;
 }
+
+export interface IGroupSettingsChangeRequest {
+    initialId: string;
+    id: string;
+    faculty: string;
+    foundingDate: string;
+}
+
+
+export interface IGroupRemoveRequest {
+    id: string;
+}
+
+export interface IGroupAddStudentRequest {
+    id: string;
+    userId: string;
+}
+
+export interface IGroupRemoveStudentRequest {
+    id: string;
+    userId: string;
+}
+
+export interface IGroupCreateRequest {
+    id: string;
+}
+
 
 
 
@@ -135,14 +186,20 @@ export interface IRegisterResponse {
     success: boolean;
 }
 
-export interface IGetUserResponse {
+export interface IUserGetResponse {
     success: boolean;
     data: IUser;
 }
 
-export interface IGetUserSearchResponse {
+export interface IUserGetSearchResponse {
     success: boolean;
     data: IUser[];
+}
+
+
+export interface IGroupGetSearchResponse {
+    success: boolean;
+    data: IGroupCard[];
 }
 
 export interface IPasswordChangeResponse {
@@ -157,10 +214,34 @@ export interface IUserSettingsChangeResponse {
     success: boolean;
 }
 
-export interface ICreateUserResponse {
+export interface IUserCreateResponse {
     success: boolean;
 }
 
-export interface IRemoveUserResponse {
+export interface IUserRemoveResponse {
+    success: boolean;
+}
+
+export interface IGroupSettingsChangeResponse {
+    success: boolean;
+}
+
+export interface IGroupRemoveResponse {
+    success: boolean;
+}
+
+export interface IGroupAddStudentResponse {
+    success: boolean;
+}
+export interface IGroupRemoveStudentResponse {
+    success: boolean;
+}
+
+export interface IGroupGetResponse {
+    success: string;
+    data: IGroup
+}
+
+export interface IGroupCreateResponse {
     success: boolean;
 }

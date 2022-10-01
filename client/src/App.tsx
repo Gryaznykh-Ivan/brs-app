@@ -29,10 +29,14 @@ import { useAppSelector } from './hooks/store';
 
 import Settings from './pages/Settings';
 import Developing from './components/Developing';
-import Users from './pages/admin/Users';
-import UserCreate from './pages/admin/UserCreate';
-import UserSettings from './pages/admin/UserSettings';
+import Users from './pages/users/Users';
+import UserCreate from './pages/users/UserCreate';
+import UserSettings from './pages/users/UserSettings';
 import User from './pages/User';
+import { UserRoles } from './types/api';
+import Groups from './pages/groups/Groups';
+import GroupSettings from './pages/groups/GroupSettings';
+import GroupAddStudents from './pages/groups/GroupAddStudents';
 
 function App() {
     const isLoading = useAppSelector(state => state.loader.isLoading)
@@ -68,19 +72,20 @@ function App() {
 
                     <Route path="user/:id" element={<PrivateRoute outlet={<User />} />} />
 
-                    {/* STUDENTS ROUTES */}
-                    <Route path="group" element={<PrivateRoute allowedRoles={["STUDENT", "HEADMAN"]} outlet={<Developing />} />} />
-                    <Route path="brs" element={<PrivateRoute allowedRoles={["STUDENT", "HEADMAN"]} outlet={<Developing />} />} />
-                    <Route path="schedule" element={<PrivateRoute allowedRoles={["STUDENT", "HEADMAN"]} outlet={<Developing />} />} />
 
-                    {/* TEACHER ROUTES */}
-                    <Route path="brs" element={<PrivateRoute allowedRoles={["TEACHER"]} outlet={<Developing />} />} />
+                    <Route path="group" element={<PrivateRoute allowedRoles={[UserRoles.STUDENT, UserRoles.HEADMAN]} outlet={<Developing />} />} />
+                    <Route path="brs" element={<PrivateRoute allowedRoles={[UserRoles.STUDENT, UserRoles.HEADMAN]} outlet={<Developing />} />} />
+                    <Route path="schedule" element={<PrivateRoute allowedRoles={[UserRoles.STUDENT, UserRoles.HEADMAN]} outlet={<Developing />} />} />
 
-                    {/* ADMIN ROUTES */}
-                    <Route path="users" element={<PrivateRoute allowedRoles={["ADMIN"]} outlet={<Users />} />} />
-                    <Route path="users/create" element={<PrivateRoute allowedRoles={["ADMIN"]} outlet={<UserCreate />} />} />
-                    <Route path="users/:id" element={<PrivateRoute allowedRoles={["ADMIN"]} outlet={<UserSettings />} />} />
-                    <Route path="groups" element={<PrivateRoute allowedRoles={["ADMIN"]} outlet={<Developing />} />} />
+                    <Route path="brs" element={<PrivateRoute allowedRoles={[UserRoles.TEACHER]} outlet={<Developing />} />} />
+
+                    <Route path="users" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<Users />} />} />
+                    <Route path="users/create" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<UserCreate />} />} />
+                    <Route path="users/:id" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<UserSettings />} />} />
+
+                    <Route path="groups" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<Groups />} />} />
+                    <Route path="groups/:id" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<GroupSettings />} />} />
+                    <Route path="groups/:id/addStudents" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<GroupAddStudents />} />} />
 
                     <Route path="settings" element={<PrivateRoute outlet={<Settings />} />} />
 

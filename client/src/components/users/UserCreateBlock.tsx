@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify';
 import { useCreateUserMutation } from '../../services/userService';
-import { ICreateUserRequest, IErrorResponse } from '../../types/api';
+import { IUserCreateRequest, IErrorResponse } from '../../types/api';
 
 export default function UserCreateBlock() {
-    const [userData, setUserData] = useState<ICreateUserRequest>({
+    const [userData, setUserData] = useState<IUserCreateRequest>({
         birthday: "",
         lastName: "",
         email: "",

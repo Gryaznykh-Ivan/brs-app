@@ -10,7 +10,6 @@ interface IProps {
     outlet: JSX.Element;
 }
 
-// by default private route designed for STUDENT
 const PrivateRoute = ({ redirectTo = "/intro", allowedRoles = [], outlet }: IProps) => {
     const auth = useSelector((state: AppState) => state.auth);
 

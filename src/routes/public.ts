@@ -10,6 +10,4 @@ router.get("/user/:id", userController.getUserById);
 router.post("/settings/changeGeneral", userController.generalSettingsChange);
 router.post("/settings/changePassword", userController.changePassword);
 
-router.get("/group/:id", groupController.getGroupById);
-
 export default router.routes();

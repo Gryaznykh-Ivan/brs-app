@@ -13,9 +13,11 @@ router.delete("/removeUser/:id", roleFilter([UserRoles.ADMIN]), adminController.
 
 // group page routes
 router.get("/group/search", roleFilter([UserRoles.ADMIN]), groupController.getGroupsBySearch);
-router.put("/group/:id/addStudentToGroup", roleFilter([UserRoles.HEADMAN, UserRoles.ADMIN]), groupController.addStudentToGroup);
-router.get("/group/:id/removeStudentFromGroup", roleFilter([UserRoles.HEADMAN, UserRoles.ADMIN]), groupController.removeStudentFromGroup);
-router.get("/group/:id/change", roleFilter([UserRoles.ADMIN]), groupController.changeGroupSettings);
+router.put("/group/create", roleFilter([UserRoles.ADMIN]), groupController.createGroup)
+router.get("/group/:id", groupController.getGroupById);
+router.post("/group/:id/addStudentToGroup", roleFilter([UserRoles.HEADMAN, UserRoles.ADMIN]), groupController.addStudentToGroup);
+router.post("/group/:id/removeStudentFromGroup", roleFilter([UserRoles.HEADMAN, UserRoles.ADMIN]), groupController.removeStudentFromGroup);
+router.post("/group/:id/change", roleFilter([UserRoles.ADMIN]), groupController.changeGroupSettings);
 router.delete("/group/:id/remove", roleFilter([UserRoles.ADMIN]), groupController.removeGroup);
 
 export default router.routes();

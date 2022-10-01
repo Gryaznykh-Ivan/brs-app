@@ -24,7 +24,7 @@ export type RegisterRequest = {
     password: string;
     birthday: string;
     name: string;
-    lastName : string;
+    lastName: string;
     group: string;
 }
 
@@ -32,7 +32,7 @@ export type GeneralSettingsChangeRequest = {
     email: string;
     birthday: string;
     name: string;
-    lastName : string;
+    lastName: string;
     group: string;
 }
 
@@ -50,7 +50,7 @@ export type CreateUserRequest = {
     password: string;
     birthday: string;
     name: string;
-    lastName : string;
+    lastName: string;
     group: string;
     role: keyof typeof UserRoles;
 }
@@ -60,7 +60,7 @@ export type ChangeUserRequest = {
     password: string;
     birthday: string;
     name: string;
-    lastName : string;
+    lastName: string;
     group: string;
     role: keyof typeof UserRoles;
 }
@@ -69,6 +69,10 @@ export type ChangeGroupRequest = {
     id: string;
     faculty: number;
     foundingDate: string;
+}
+
+export type CreateGroupRequest = {
+    id: string;
 }
 
 export type IdParamsRequest = {
