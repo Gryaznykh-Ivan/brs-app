@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import BackBlock from '../../components/BackBlock'
 import SearchBlock from '../../components/SearchBlock';
 import UserCard from '../../components/users/UserCard';
 import { useAddStudentToGroupMutation } from '../../services/groupService';
 import { useLazyGetUserSearchQuery } from '../../services/userService';
+import { IErrorResponse, UserRoles } from '../../types/api';
 
 export default function GroupAddStudents() {
     const { id="" } = useParams()
     const [getUserSearch, { data }] = useLazyGetUserSearchQuery();
-    const [addStudentToGroup, { isSuccess }] = useAddStudentToGroupMutation();
+    const [addStudentToGroup, { error: addStudentToGroupError }] = useAddStudentToGroupMutation();
     const [query, setQuery] = useState({
         q: "",
         limit: 10,
@@ -19,6 +21,12 @@ export default function GroupAddStudents() {
     useEffect(() => {
         getUserSearch(query)
     }, [query])
+
+    useEffect(() => {
+        if (addStudentToGroupError && "status" in addStudentToGroupError) {
+            toast.error((addStudentToGroupError.data as IErrorResponse).error)
+        }
+    }, [addStudentToGroupError])
 
     const onSearch = (q: string) => {
         setQuery(prev => ({ ...prev, q, skip: 0 }))
@@ -55,13 +63,15 @@ export default function GroupAddStudents() {
                             onDelete={() => { }}
                             buttons={
                                 user.group === null
-                                    ? [{
-                                        name: "Добавить",
-                                        color: "bg-green-600",
-                                        callback: onAddStudentToGroup
-                                    }]
+                                    ? user.role !== UserRoles.TEACHER 
+                                        ? [{
+                                            name: "Добавить",
+                                            color: "bg-green-600",
+                                            callback: onAddStudentToGroup
+                                        }]
+                                        : []
                                     : [{
-                                        name: "Уже участник",
+                                        name: "Уже имеет группу",
                                         color: "bg-gray-400",
                                         disabled: true
                                     }]
