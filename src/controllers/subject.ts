@@ -1,5 +1,6 @@
 import { Prisma } from '@prisma/client'
 import { Context } from 'koa'
+import validator from 'validator'
 import prisma from '../db'
 import { AddGroupToSubjectRequest, ChangeSubjectRequest, CreateSubjectRequest, GetByIdRequest, GetBySearchRequest, IdParamsRequest, RemoveGroupFromSubjectRequest, UserRoles } from '../types/requestTypes'
 import { BadRequest, Ok } from '../utils/response'
@@ -13,6 +14,13 @@ const getSubjectById = async (ctx: Context) => {
             Groups: {
                 select: {
                     id: true,
+                    faculty: true,
+                    foundingDate: true,
+                    _count: {
+                        select: {
+                            Strudents: true
+                        }
+                    }
                 }
             }
         }
@@ -22,7 +30,17 @@ const getSubjectById = async (ctx: Context) => {
         return BadRequest(ctx, "Дисциплина не найдена")
     }
 
-    return Ok(ctx, subject)
+    const result = {
+        ...subject,
+        Groups: subject.Groups.map(group => ({
+            id: group.id,
+            faculty: group.faculty,
+            foundingDate: group.foundingDate,
+            studentsCount: group._count.Strudents
+        }))
+    }
+
+    return Ok(ctx, result)
 }
 
 const getSubjectBySearch = async (ctx: Context) => {
@@ -55,20 +73,32 @@ const getSubjectBySearch = async (ctx: Context) => {
 const createSubject = async (ctx: Context) => {
     const { createdBy, title, type } = <CreateSubjectRequest>ctx.request.body
 
-    const user = await prisma.user.findFirst({ where: { id: createdBy }})
+    if (validator.isEmpty(title) === true) {
+        return BadRequest(ctx, "Название курса не может быть пустым")
+    }
+
+    const user = await prisma.user.findFirst({ where: { id: createdBy } })
     if (user === null) {
         return BadRequest(ctx, "Пользователь не найден")
     }
 
-    if (user.role === UserRoles.STUDENT || user.role === UserRoles.HEADMAN) {
-        return BadRequest(ctx, "У вас нет прав на создание дисциплины")
-    }
-
     try {
-        await prisma.subject.create({ data: { createdById: createdBy, title, type, createdByFIO: user.FIO }});
+        await prisma.subject.create({
+            data: {
+                createdBy: {
+                    connect: {
+                        id: user.id
+                    }
+                },
+                title,
+                type,
+                createdByFIO: user.FIO
+            }
+        });
 
         return Ok(ctx);
     } catch (e) {
+        console.log(e);
         return BadRequest(ctx, "При создании дисциплины произошла ошибка. Попробуйте позже или обратитесь к администратору")
     }
 }
@@ -76,7 +106,7 @@ const createSubject = async (ctx: Context) => {
 const removeSubject = async (ctx: Context) => {
     const { id } = <IdParamsRequest>ctx.params;
 
-    const subject = await prisma.subject.findFirst({ where: { id }})
+    const subject = await prisma.subject.findFirst({ where: { id } })
     if (subject === null) {
         return BadRequest(ctx, "Дисциплина не найден");
     }

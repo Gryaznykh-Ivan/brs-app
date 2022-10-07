@@ -37,7 +37,7 @@ const baseQueryWithLogic: BaseQueryFn<
 export const appApi = createApi({
     reducerPath: 'appApi',
     baseQuery: baseQueryWithLogic,
-    tagTypes: ['Profile', 'User', 'Users', 'Group', 'Groups'],
+    tagTypes: ['Profile', 'User', 'Users', 'Group', 'Groups', 'Subject', 'Subjects'],
     endpoints: (builder) => ({}),
 })
 

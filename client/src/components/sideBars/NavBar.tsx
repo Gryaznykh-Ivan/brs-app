@@ -80,6 +80,14 @@ export default function SideBar() {
                         </div>
                         <div className="font-bold">Группы</div>
                     </NavLink>
+                    <NavLink to="/subjects" className={({ isActive }) => `flex space-x-2 items-center p-2 rounded-lg ${isActive && "bg-mred text-white fill-white"}`}>
+                        <div className="flex justify-center items-center w-5 h-5">
+                            <svg width="16" height="14" viewBox="0 0 16 14" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 6.25C12.4062 6.25 12.75 6.59375 12.75 7C12.75 7.4375 12.4062 7.75 12 7.75H4C3.5625 7.75 3.25 7.4375 3.25 7C3.25 6.59375 3.5625 6.25 4 6.25H12ZM12 9.25C12.4062 9.25 12.75 9.59375 12.75 10C12.75 10.4375 12.4062 10.75 12 10.75H4C3.5625 10.75 3.25 10.4375 3.25 10C3.25 9.59375 3.5625 9.25 4 9.25H12ZM0 2C0 0.90625 0.875 0 2 0H14C15.0938 0 16 0.90625 16 2V12C16 13.125 15.0938 14 14 14H2C0.875 14 0 13.125 0 12V2ZM1.5 5V12C1.5 12.2812 1.71875 12.5 2 12.5H14C14.25 12.5 14.5 12.2812 14.5 12V5H1.5ZM13.625 2H11.3438C11.125 2 11 2.28125 11.1562 2.4375L12.3125 3.59375C12.4062 3.6875 12.5625 3.6875 12.6562 3.59375L13.8125 2.4375C13.9688 2.28125 13.8438 2 13.625 2Z" fill="inherit" />
+                            </svg>
+                        </div>
+                        <div className="font-bold">Дисциплины</div>
+                    </NavLink>
                 </>
             }
 

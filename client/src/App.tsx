@@ -37,6 +37,10 @@ import { UserRoles } from './types/api';
 import Groups from './pages/groups/Groups';
 import GroupSettings from './pages/groups/GroupSettings';
 import GroupAddStudents from './pages/groups/GroupAddStudents';
+import Subjects from './pages/subjects/Subjects';
+import SubjectCreate from './pages/subjects/SubjectCreate';
+import Subject from './pages/subjects/Subject';
+import SubjectAddGroup from './pages/subjects/SubjectAddGroups';
 
 function App() {
     const isLoading = useAppSelector(state => state.loader.isLoading)
@@ -72,12 +76,14 @@ function App() {
 
                     <Route path="user/:id" element={<PrivateRoute outlet={<User />} />} />
 
-
-                    <Route path="group" element={<PrivateRoute allowedRoles={[UserRoles.STUDENT, UserRoles.HEADMAN]} outlet={<Developing />} />} />
+                    {/* <Route path="group" element={<PrivateRoute allowedRoles={[UserRoles.STUDENT, UserRoles.HEADMAN]} outlet={<Developing />} />} />
                     <Route path="brs" element={<PrivateRoute allowedRoles={[UserRoles.STUDENT, UserRoles.HEADMAN]} outlet={<Developing />} />} />
-                    <Route path="schedule" element={<PrivateRoute allowedRoles={[UserRoles.STUDENT, UserRoles.HEADMAN]} outlet={<Developing />} />} />
+                    <Route path="schedule" element={<PrivateRoute allowedRoles={[UserRoles.STUDENT, UserRoles.HEADMAN]} outlet={<Developing />} />} /> */}
 
-                    <Route path="brs" element={<PrivateRoute allowedRoles={[UserRoles.TEACHER]} outlet={<Developing />} />} />
+                    <Route path="subjects" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<Subjects />} />} />
+                    <Route path="subjects/create" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<SubjectCreate />} />} />
+                    <Route path="subjects/:id" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<Subject />} />} />
+                    <Route path="subjects/:id/addGroups" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<SubjectAddGroup />} />} />
 
                     <Route path="users" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<Users />} />} />
                     <Route path="users/create" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<UserCreate />} />} />

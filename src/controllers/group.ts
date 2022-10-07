@@ -137,7 +137,7 @@ const removeStudentFromGroup = async (ctx: Context) => {
 const createGroup = async (ctx: Context) => {
     const { id } = <CreateGroupRequest>ctx.request.body;
 
-    const group = await prisma.group.findFirst({ where: { id }})
+    const group = await prisma.group.findFirst({ where: { id } })
     if (group !== null) {
         return BadRequest(ctx, `Группа ${id} уже существует`)
     }

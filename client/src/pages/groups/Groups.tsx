@@ -70,6 +70,7 @@ export default function Groups() {
                         key={ group.id }
                         id={ group.id }
                         studentCount={ group.studentsCount }
+                        isDeletable={ true }
                         onDelete={onDelete}
                     />)}
                 </div>

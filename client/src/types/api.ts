@@ -6,6 +6,16 @@ export enum UserRoles {
     ADMIN = "ADMIN"
 }
 
+export enum SubjectTypes {
+    ELECTIVE_COURSE = "ELECTIVE_COURSE",
+    DISCIPLINE = "DISCIPLINE"
+}
+
+export enum TranslatedSubjectTypes {
+    ELECTIVE_COURSE = "Элективный курс",
+    DISCIPLINE = "Дисциплина"
+}
+
 export enum TranslatedUserRoles {
     STUDENT = "Студент",
     HEADMAN = "Староста",
@@ -36,6 +46,23 @@ export interface IGroup {
     faculty: string;
     foundingDate: string;
     students: IUser[]
+}
+
+export interface ISubject {
+    id: string;
+    type: keyof typeof SubjectTypes;
+    title: string;
+    createdByFIO: string;
+    updatedAt: string;
+    Groups: IGroupCard[]
+}
+
+export interface ISubjectCard {
+    id: string;
+    type: keyof typeof SubjectTypes;
+    title: string;
+    createdByFIO: string;
+    updatedAt: string;
 }
 
 
@@ -77,17 +104,6 @@ export interface IUserGetSearchRequest {
     skip: number;
 }
 
-export interface IGroupGetRequest {
-    id: string;
-}
-
-export interface IGroupGetSearchRequest {
-    q: string;
-    limit: number;
-    skip: number;
-}
-
-
 export interface IGeneralSettingsChangeRequest {
     name: string;
     lastName: string;
@@ -127,6 +143,17 @@ export interface IPasswordChangeRequest {
     newPassword: string;
 }
 
+export interface IGroupGetRequest {
+    id: string;
+}
+
+export interface IGroupGetSearchRequest {
+    q: string;
+    limit: number;
+    skip: number;
+}
+
+
 export interface IGroupSettingsChangeRequest {
     initialId: string;
     id: string;
@@ -153,7 +180,43 @@ export interface IGroupCreateRequest {
     id: string;
 }
 
+export interface ISubjectGetRequest {
+    id: string;
+}
 
+export interface ISubjectGetSearchRequest {
+    q: string;
+    limit: number;
+    skip: number;
+}
+
+
+export interface ISubjectSettingsChangeRequest {
+    initialId: string;
+    title: string;
+    type: keyof typeof SubjectTypes;
+}
+
+
+export interface ISubjectRemoveRequest {
+    id: string;
+}
+
+export interface ISubjectAddGroupRequest {
+    id: string;
+    groupId: string;
+}
+
+export interface ISubjectRemoveGroupRequest {
+    id: string;
+    groupId: string;
+}
+
+export interface ISubjectCreateRequest {
+    type: keyof typeof SubjectTypes;
+    title: string;
+    createdById: string;
+}
 
 
 
@@ -196,12 +259,6 @@ export interface IUserGetSearchResponse {
     data: IUser[];
 }
 
-
-export interface IGroupGetSearchResponse {
-    success: boolean;
-    data: IGroupCard[];
-}
-
 export interface IPasswordChangeResponse {
     success: boolean;
 }
@@ -220,6 +277,11 @@ export interface IUserCreateResponse {
 
 export interface IUserRemoveResponse {
     success: boolean;
+}
+
+export interface IGroupGetSearchResponse {
+    success: boolean;
+    data: IGroupCard[];
 }
 
 export interface IGroupSettingsChangeResponse {
@@ -243,5 +305,34 @@ export interface IGroupGetResponse {
 }
 
 export interface IGroupCreateResponse {
+    success: boolean;
+}
+
+export interface ISubjectGetSearchResponse {
+    success: boolean;
+    data: ISubjectCard[];
+}
+
+export interface ISubjectSettingsChangeResponse {
+    success: boolean;
+}
+
+export interface ISubjectRemoveResponse {
+    success: boolean;
+}
+
+export interface ISubjectAddGroupResponse {
+    success: boolean;
+}
+export interface ISubjectRemoveGroupResponse {
+    success: boolean;
+}
+
+export interface ISubjectGetResponse {
+    success: string;
+    data: ISubject;
+}
+
+export interface ISubjectCreateResponse {
     success: boolean;
 }
