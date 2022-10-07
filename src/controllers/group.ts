@@ -2,7 +2,7 @@ import { Prisma } from "@prisma/client";
 import { Context } from "koa";
 import validator from "validator";
 import prisma from "../db";
-import { AddStudentToGroup, ChangeGroupRequest, CreateGroupRequest, GetByIdRequest, GetBySearchRequest, IdParamsRequest, RemoveStudentFromGroup, UserRoles } from "../types/requestTypes";
+import { AddStudentToGroupRequest, ChangeGroupRequest, CreateGroupRequest, GetByIdRequest, GetBySearchRequest, IdParamsRequest, RemoveStudentFromGroupRequest, UserRoles } from "../types/requestTypes";
 import { BadRequest, Created, Ok } from "../utils/response";
 
 const getGroupById = async (ctx: Context) => {
@@ -47,7 +47,7 @@ const getGroupsBySearch = async (ctx: Context) => {
         where: {
             id: q.length > 0 ? q : undefined
         },
-        orderBy: [{ createAt: 'desc' }],
+        orderBy: [{ createdAt: 'desc' }],
         select: {
             id: true,
             faculty: true,
@@ -73,7 +73,7 @@ const getGroupsBySearch = async (ctx: Context) => {
 
 const addStudentToGroup = async (ctx: Context) => {
     const { id } = <IdParamsRequest>ctx.params;
-    const { id: userId } = <AddStudentToGroup>ctx.request.body;
+    const { id: userId } = <AddStudentToGroupRequest>ctx.request.body;
 
     const user = await prisma.user.findFirst({ where: { id: userId } });
     if (user === null) {
@@ -109,7 +109,7 @@ const addStudentToGroup = async (ctx: Context) => {
 
 const removeStudentFromGroup = async (ctx: Context) => {
     const { id } = <IdParamsRequest>ctx.params;
-    const { id: userId } = <RemoveStudentFromGroup>ctx.request.body;
+    const { id: userId } = <RemoveStudentFromGroupRequest>ctx.request.body;
 
     const user = await prisma.user.findFirst({ where: { id: userId, group: id } });
     if (user === null) {
@@ -208,11 +208,11 @@ const removeGroup = async (ctx: Context) => {
 
     try {
         await prisma.group.delete({ where: { id } })
+
+        return Ok(ctx);
     } catch (e) {
         return BadRequest(ctx, "Удалить группу не удалось")
     }
-
-    return Ok(ctx);
 }
 
 

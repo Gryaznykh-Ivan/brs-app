@@ -5,6 +5,11 @@ export enum UserRoles {
     ADMIN = "ADMIN"
 }
 
+export enum SubjectTypes {
+    ELECTIVE_COURSE = "ELECTIVE_COURSE",
+    DISCIPLINE = "DISCIPLINE"
+}
+
 export type LoginThroughEmailRequest = {
     email: string;
     code: string;
@@ -85,10 +90,29 @@ export type GetBySearchRequest = {
     skip?: string;
 }
 
-export type AddStudentToGroup = {
+export type AddStudentToGroupRequest = {
     id: string;
 }
 
-export type RemoveStudentFromGroup = {
+export type RemoveStudentFromGroupRequest = {
     id: string;
+}
+
+export type CreateSubjectRequest = {
+    type: keyof typeof SubjectTypes;
+    title: string;
+    createdBy: string;
+}
+
+export type AddGroupToSubjectRequest = {
+    id: string;
+}
+
+export type RemoveGroupFromSubjectRequest = {
+    id: string;
+}
+
+export type ChangeSubjectRequest = {
+    title: string;
+    type: keyof typeof SubjectTypes;
 }

@@ -15,6 +15,11 @@ enum UserRole {
   ADMIN
 }
 
+enum SubjectType {
+  ELECTIVE_COURSE
+  DISCIPLINE
+}
+
 model User {
   id        String    @id @default(uuid())
   name      String    @db.VarChar(32)
@@ -27,8 +32,10 @@ model User {
   code      String?   @db.VarChar(64)
   role      UserRole  @default(STUDENT)
   Group     Group?    @relation(fields: [group], references: [id], onDelete: SetNull, onUpdate: Cascade)
-  createAt  DateTime  @default(now())
+  Subjects  Subject[]
+  createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+  Mark      Mark[]
 
   @@fulltext([FIO])
 }
@@ -38,6 +45,47 @@ model Group {
   faculty      Int?      @db.SmallInt
   foundingDate DateTime?
   Strudents    User[]
-  createAt     DateTime  @default(now())
+  createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
+  Subjects     Subject[]
+  Table        Table[]
+}
+
+model Subject {
+  id           String      @id @default(uuid())
+  type         SubjectType @default(DISCIPLINE)
+  createdByFIO String      @db.VarChar(64)
+  createdBy    User        @relation(fields: [createdById], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  title        String      @db.VarChar(128)
+  Groups       Group[]
+  Tables       Table[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  createdById  String
+
+  @@fulltext([title, createdByFIO])
+}
+
+model Table {
+  id        String   @id @default(uuid())
+  title     String   @db.VarChar(64)
+  Group     Group?   @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Subject   Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  subjectId String
+  groupId   String?  @db.VarChar(4)
+  Mark      Mark[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Mark {
+  id        String   @id @default(uuid())
+  title     String   @db.VarChar(16)
+  value     Int      @db.TinyInt
+  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Table     Table    @relation(fields: [tableId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  tableId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
 }
