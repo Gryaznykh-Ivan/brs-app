@@ -23,7 +23,7 @@ export const subjectService = appApi.injectEndpoints({
                     id: groupId
                 }
             }),
-            invalidatesTags: ['Subjects', 'Subject']
+            invalidatesTags: ['Subjects', 'Subject', 'Groups']
         }),
         removeGroupFromSubject: bulider.mutation<ISubjectRemoveGroupResponse, ISubjectRemoveGroupRequest>({
             query: ({ id, groupId }) => ({

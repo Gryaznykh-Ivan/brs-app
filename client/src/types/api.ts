@@ -151,6 +151,7 @@ export interface IGroupGetSearchRequest {
     q: string;
     limit: number;
     skip: number;
+    exclude?: string;
 }
 
 

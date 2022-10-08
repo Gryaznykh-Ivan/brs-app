@@ -3,7 +3,7 @@ import { Context } from 'koa'
 import bcrypt from 'bcrypt'
 import validator from 'validator'
 import prisma from '../db'
-import { ChangePasswordRequest, GeneralSettingsChangeRequest, GetByIdRequest, GetBySearchRequest } from '../types/requestTypes'
+import { ChangePasswordRequest, GeneralSettingsChangeRequest, GetByIdRequest, GetBySearchRequest, UserRoles } from '../types/requestTypes'
 import { BadRequest, Ok, Unauthorized } from '../utils/response'
 
 const getUserById = async (ctx: Context) => {
@@ -27,16 +27,27 @@ const getUserById = async (ctx: Context) => {
 }
 
 const getUsersBySearch = async (ctx: Context) => {
-    const { q = "", limit = 10, skip = 0 } = <GetBySearchRequest>ctx.query;
+    const { q = "", limit = 10, skip = 0, exclude } = <GetBySearchRequest>ctx.query;
+
+    const whereCondition = {
+        FIO: {
+            search: q.length > 0 ? q : undefined
+        }
+    }
+
+    if (exclude !== undefined) {
+        Object.assign(whereCondition, {
+            group: null,
+            NOT: {
+                role: UserRoles.TEACHER
+            }
+        })
+    }
 
     const users = await prisma.user.findMany({
         skip: Number(skip),
         take: Number(limit),
-        where: {
-            FIO: {
-                search: q.length > 0 ? q : undefined
-            }
-        },
+        where: whereCondition,
         select: {
             id: true,
             name: true,

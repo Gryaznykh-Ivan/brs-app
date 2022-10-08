@@ -15,7 +15,8 @@ export default function GroupAddStudents() {
     const [query, setQuery] = useState({
         q: "",
         limit: 10,
-        skip: 0
+        skip: 0,
+        exclude: true
     })
 
     useEffect(() => {

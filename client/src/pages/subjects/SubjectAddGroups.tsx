@@ -15,7 +15,8 @@ export default function SubjectAddGroups() {
     const [query, setQuery] = useState({
         q: "",
         limit: 10,
-        skip: 0
+        skip: 0,
+        exclude: id
     })
 
     useEffect(() => {
@@ -49,7 +50,7 @@ export default function SubjectAddGroups() {
                 onSearch={onSearch}
             />
             {data && <>
-                {data.data.length === 0 && <div className="bg-white rounded-lg p-4 shadow-md text-xl text-center">По вашему запросу ничего не найдено</div>}
+                {data.data.length === 0 && <div className="bg-white rounded-lg p-4 shadow-md text-xl text-center">Нет групп доступных к добавлению</div>}
 
                 <div className="grid grid-cols-2 gap-2">
                     {data.data.map(group => <GroupCard

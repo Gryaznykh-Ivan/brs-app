@@ -88,6 +88,7 @@ export type GetBySearchRequest = {
     q?: string;
     limit?: string;
     skip?: string;
+    exclude?: string;
 }
 
 export type AddStudentToGroupRequest = {

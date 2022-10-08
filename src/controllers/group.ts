@@ -39,14 +39,26 @@ const getGroupById = async (ctx: Context) => {
 }
 
 const getGroupsBySearch = async (ctx: Context) => {
-    const { q = "", limit = 10, skip = 0 } = <GetBySearchRequest>ctx.query;
+    const { q = "", limit = 10, skip = 0, exclude } = <GetBySearchRequest>ctx.query;
+
+    const whereCondition = {
+        id: q.length > 0 ? q : undefined,
+    }
+
+    if (exclude !== undefined) {
+        Object.assign(whereCondition, {
+            Subjects: {
+                none: {
+                    id: exclude
+                }
+            }
+        })
+    }
 
     const groups = await prisma.group.findMany({
         skip: Number(skip),
         take: Number(limit),
-        where: {
-            id: q.length > 0 ? q : undefined
-        },
+        where: whereCondition,
         orderBy: [{ createdAt: 'desc' }],
         select: {
             id: true,
