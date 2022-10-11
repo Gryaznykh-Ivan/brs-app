@@ -219,7 +219,13 @@ export interface ISubjectCreateRequest {
     createdById: string;
 }
 
+export interface ITableCreateRequest {
+    title: string;
+}
 
+export interface ITableSelectRequest {
+    id: string;
+}
 
 
 
