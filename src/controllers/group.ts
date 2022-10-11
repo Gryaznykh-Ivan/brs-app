@@ -11,7 +11,7 @@ const getGroupById = async (ctx: Context) => {
     const group = await prisma.group.findFirst({
         where: { id },
         include: {
-            strudents: {
+            students: {
                 select: {
                     id: true,
                     name: true,
@@ -34,7 +34,7 @@ const getGroupById = async (ctx: Context) => {
         id: group.id,
         faculty: group.faculty,
         foundingDate: group.foundingDate,
-        students: group.strudents
+        students: group.students
     });
 }
 
@@ -47,7 +47,7 @@ const getGroupsBySearch = async (ctx: Context) => {
 
     if (exclude !== undefined) {
         Object.assign(whereCondition, {
-            Subjects: {
+            subjects: {
                 none: {
                     id: exclude
                 }
@@ -66,7 +66,7 @@ const getGroupsBySearch = async (ctx: Context) => {
             foundingDate: true,
             _count: {
                 select: {
-                    strudents: true
+                    students: true
                 }
             }
         }
@@ -76,7 +76,7 @@ const getGroupsBySearch = async (ctx: Context) => {
         id: group.id,
         faculty: group.faculty,
         foundingDate: group.foundingDate,
-        studentsCount: group._count.strudents
+        studentsCount: group._count.students
     }))
 
     return Ok(ctx, result)

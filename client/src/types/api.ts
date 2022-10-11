@@ -54,7 +54,7 @@ export interface ISubject {
     title: string;
     createdByFIO: string;
     updatedAt: string;
-    Groups: IGroupCard[]
+    groups: IGroupCard[]
 }
 
 export interface ISubjectCard {

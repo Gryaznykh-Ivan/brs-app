@@ -44,12 +44,13 @@ export default function Subject() {
                     id={data.data.id}
                     title={data.data.title}
                     description={data.data.createdByFIO}
+                    isButtons={ true }
                     onDelete={onDelete}
                 />
-                {data.data.Groups.length === 0 && <div className="bg-white rounded-lg p-4 shadow-sm text-xl text-center leading-6">Групп изучающих дисциплину нет<br /><span className="text-tgrey text-sm">Группу можно добавить нажав на зеленную кнопку в шапке дисциплины</span></div>}
-                {data.data.Groups.length !== 0 &&
+                {data.data.groups.length === 0 && <div className="bg-white rounded-lg p-4 shadow-sm text-xl text-center leading-6">Групп изучающих дисциплину нет<br /><span className="text-tgrey text-sm">Группу можно добавить нажав на зеленную кнопку в шапке дисциплины</span></div>}
+                {data.data.groups.length !== 0 &&
                     <div className="grid grid-cols-2 gap-2">
-                        {data.data.Groups.map(group => <SubjectGroupCard
+                        {data.data.groups.map(group => <SubjectGroupCard
                             key={group.id}
                             id={group.id}
                             subjectId={id}

@@ -44,7 +44,7 @@ model Group {
   id           String    @id @db.VarChar(4)
   faculty      Int?      @db.SmallInt
   foundingDate DateTime?
-  strudents    User[]
+  students    User[]
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   subjects     Subject[]

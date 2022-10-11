@@ -37,7 +37,7 @@ const getUsersBySearch = async (ctx: Context) => {
 
     if (exclude !== undefined) {
         Object.assign(whereCondition, {
-            group: null,
+            groupId: null,
             NOT: {
                 role: UserRoles.TEACHER
             }

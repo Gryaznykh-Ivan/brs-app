@@ -23,7 +23,7 @@ const getSubjectById = async (ctx: Context) => {
                     foundingDate: true,
                     _count: {
                         select: {
-                            strudents: true
+                            students: true
                         }
                     }
                 }
@@ -41,11 +41,11 @@ const getSubjectById = async (ctx: Context) => {
         createdByFIO: subject.createdBy.FIO,
         type: subject.type,
         updatedAt: subject.updatedAt,
-        Groups: subject.groups.map(group => ({
+        groups: subject.groups.map(group => ({
             id: group.id,
             faculty: group.faculty,
             foundingDate: group.foundingDate,
-            studentsCount: group._count.strudents
+            studentsCount: group._count.students
         }))
     }
 
