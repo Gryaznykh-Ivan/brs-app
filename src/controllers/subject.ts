@@ -11,14 +11,19 @@ const getSubjectById = async (ctx: Context) => {
     const subject = await prisma.subject.findFirst({
         where: { id },
         include: {
-            Groups: {
+            createdBy: {
+                select: {
+                    FIO: true
+                }
+            },
+            groups: {
                 select: {
                     id: true,
                     faculty: true,
                     foundingDate: true,
                     _count: {
                         select: {
-                            Strudents: true
+                            strudents: true
                         }
                     }
                 }
@@ -31,12 +36,16 @@ const getSubjectById = async (ctx: Context) => {
     }
 
     const result = {
-        ...subject,
-        Groups: subject.Groups.map(group => ({
+        id: subject.id,
+        title: subject.title,
+        createdByFIO: subject.createdBy.FIO,
+        type: subject.type,
+        updatedAt: subject.updatedAt,
+        Groups: subject.groups.map(group => ({
             id: group.id,
             faculty: group.faculty,
             foundingDate: group.foundingDate,
-            studentsCount: group._count.Strudents
+            studentsCount: group._count.strudents
         }))
     }
 
@@ -49,35 +58,51 @@ const getSubjectBySearch = async (ctx: Context) => {
     const subjects = await prisma.subject.findMany({
         skip: Number(skip),
         take: Number(limit),
-        where: {
-            title: {
-                search: q.length > 0 ? q : undefined
-            },
-            createdByFIO: {
-                search: q.length > 0 ? q : undefined
+        include: {
+            createdBy: {
+                select: {
+                    FIO: true
+                }
             }
         },
-        select: {
-            id: true,
-            createdByFIO: true,
-            title: true,
-            type: true,
-            updatedAt: true
+        where: {
+            OR: [
+                {
+                    title: {
+                        search: q.length > 0 ? q : undefined
+                    }
+                },
+                {
+                    createdBy: {
+                        FIO: {
+                            search: q.length > 0 ? q : undefined
+                        }
+                    }
+                }
+            ]
         },
         orderBy: [{ createdAt: 'desc' }]
     })
 
-    return Ok(ctx, subjects)
+    const result = subjects.map(subject => ({
+        id: subject.id,
+        title: subject.title,
+        createdByFIO: subject.createdBy.FIO,
+        type: subject.type,
+        updatedAt: subject.updatedAt
+    }))
+
+    return Ok(ctx, result)
 }
 
 const createSubject = async (ctx: Context) => {
-    const { createdBy, title, type } = <CreateSubjectRequest>ctx.request.body
+    const { createdById, title, type } = <CreateSubjectRequest>ctx.request.body
 
     if (validator.isEmpty(title) === true) {
         return BadRequest(ctx, "Название курса не может быть пустым")
     }
 
-    const user = await prisma.user.findFirst({ where: { id: createdBy } })
+    const user = await prisma.user.findFirst({ where: { id: createdById } })
     if (user === null) {
         return BadRequest(ctx, "Пользователь не найден")
     }
@@ -91,8 +116,7 @@ const createSubject = async (ctx: Context) => {
                     }
                 },
                 title,
-                type,
-                createdByFIO: user.FIO
+                type
             }
         });
 
@@ -138,7 +162,7 @@ const addGroupToSubject = async (ctx: Context) => {
         await prisma.group.update({
             where: { id: groupId },
             data: {
-                Subjects: {
+                subjects: {
                     connect: {
                         id
                     }
@@ -174,7 +198,7 @@ const removeGroupFromSubject = async (ctx: Context) => {
         await prisma.group.update({
             where: { id: groupId },
             data: {
-                Subjects: {
+                subjects: {
                     disconnect: {
                         id
                     }

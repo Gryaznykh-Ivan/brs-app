@@ -30,7 +30,7 @@ export interface IUser {
     FIO: string;
     birthday: string | null;
     email: string;
-    group: string | null;
+    groupId: string | null;
     role: keyof typeof UserRoles;
 }
 

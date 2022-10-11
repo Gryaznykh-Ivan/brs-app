@@ -11,7 +11,7 @@ const getGroupById = async (ctx: Context) => {
     const group = await prisma.group.findFirst({
         where: { id },
         include: {
-            Strudents: {
+            strudents: {
                 select: {
                     id: true,
                     name: true,
@@ -19,7 +19,7 @@ const getGroupById = async (ctx: Context) => {
                     lastName: true,
                     birthday: true,
                     email: true,
-                    group: true,
+                    groupId: true,
                     role: true
                 }
             }
@@ -34,7 +34,7 @@ const getGroupById = async (ctx: Context) => {
         id: group.id,
         faculty: group.faculty,
         foundingDate: group.foundingDate,
-        students: group.Strudents
+        students: group.strudents
     });
 }
 
@@ -66,7 +66,7 @@ const getGroupsBySearch = async (ctx: Context) => {
             foundingDate: true,
             _count: {
                 select: {
-                    Strudents: true
+                    strudents: true
                 }
             }
         }
@@ -76,7 +76,7 @@ const getGroupsBySearch = async (ctx: Context) => {
         id: group.id,
         faculty: group.faculty,
         foundingDate: group.foundingDate,
-        studentsCount: group._count.Strudents
+        studentsCount: group._count.strudents
     }))
 
     return Ok(ctx, result)
@@ -105,7 +105,7 @@ const addStudentToGroup = async (ctx: Context) => {
         await prisma.user.update({
             where: { id: userId },
             data: {
-                group: id
+                groupId: id
             }
         })
 
@@ -123,7 +123,7 @@ const removeStudentFromGroup = async (ctx: Context) => {
     const { id } = <IdParamsRequest>ctx.params;
     const { id: userId } = <RemoveStudentFromGroupRequest>ctx.request.body;
 
-    const user = await prisma.user.findFirst({ where: { id: userId, group: id } });
+    const user = await prisma.user.findFirst({ where: { id: userId, groupId: id } });
     if (user === null) {
         return BadRequest(ctx, "Пользователь не найден")
     }
@@ -132,7 +132,7 @@ const removeStudentFromGroup = async (ctx: Context) => {
         await prisma.user.update({
             where: { id: userId },
             data: {
-                group: null
+                groupId: null
             }
         })
 

@@ -102,7 +102,7 @@ export type RemoveStudentFromGroupRequest = {
 export type CreateSubjectRequest = {
     type: keyof typeof SubjectTypes;
     title: string;
-    createdBy: string;
+    createdById: string;
 }
 
 export type AddGroupToSubjectRequest = {

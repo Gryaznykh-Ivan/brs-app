@@ -21,7 +21,7 @@ const getUserById = async (ctx: Context) => {
         lastName: user.lastName,
         birthday: user.birthday,
         email: user.email,
-        group: user.group,
+        groupId: user.groupId,
         role: user.role
     });
 }
@@ -55,7 +55,7 @@ const getUsersBySearch = async (ctx: Context) => {
             lastName: true,
             birthday: true,
             email: true,
-            group: true,
+            groupId: true,
             role: true
         }
     })
@@ -93,7 +93,7 @@ const generalSettingsChange = async (ctx: Context) => {
 
 
     try {
-        await prisma.user.update({ where: { id }, data: { name, lastName, email, group, birthday: new Date(birthday), FIO: `${lastName} ${name}` } })
+        await prisma.user.update({ where: { id }, data: { name, lastName, email, groupId: group, birthday: new Date(birthday), FIO: `${lastName} ${name}` } })
 
         return Ok(ctx)
     } catch (e) {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import BackBlock from '../../components/BackBlock';
 import GroupCard from '../../components/groups/GroupCard';
@@ -9,9 +9,10 @@ import { useAddGroupToSubjectMutation } from '../../services/subjectService';
 import { IErrorResponse } from '../../types/api';
 
 export default function SubjectAddGroups() {
+    const navigate = useNavigate()
     const { id = "" } = useParams()
     const [getGroupSearch, { data }] = useLazyGetGroupSearchQuery();
-    const [addGroupToSubject, { error: addGroupToSubjectError }] = useAddGroupToSubjectMutation();
+    const [addGroupToSubject, { isSuccess: isGroupAddSuccess, error: addGroupToSubjectError }] = useAddGroupToSubjectMutation();
     const [query, setQuery] = useState({
         q: "",
         limit: 10,
@@ -22,6 +23,12 @@ export default function SubjectAddGroups() {
     useEffect(() => {
         getGroupSearch(query)
     }, [query])
+
+    useEffect(() => {
+        if (isGroupAddSuccess === true) {
+            toast.success("Группа успешно добавлена")
+        }
+    }, [isGroupAddSuccess])
 
     useEffect(() => {
         if (addGroupToSubjectError && "status" in addGroupToSubjectError) {

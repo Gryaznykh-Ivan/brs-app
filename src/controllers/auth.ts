@@ -124,7 +124,7 @@ const register = async (ctx: Context) => {
                 email,
                 name,
                 FIO: `${ lastName } ${ name }`,
-                group: validator.isEmpty(group) ? null : group,
+                groupId: validator.isEmpty(group) ? null : group,
                 password: hash,
                 lastName: lastName,
                 birthday: new Date(birthday),

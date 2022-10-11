@@ -23,7 +23,7 @@ export default function GeneralSettingsBlock() {
             birthday: data?.data.birthday?.slice(0, 10) || "",
             lastName: data?.data.lastName || "",
             email: data?.data.email || "",
-            group: data?.data.group || "",
+            group: data?.data.groupId || "",
             name: data?.data.name || "",
         }
     }, [data]);

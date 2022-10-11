@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useAppSelector } from '../../hooks/store';
 import { useCreateSubjectMutation } from '../../services/subjectService';
 import { IErrorResponse, ISubjectCreateRequest } from '../../types/api';
 
 export default function SubjectCreateBlock() {
+    const navigate = useNavigate()
     const auth = useAppSelector(state => state.auth.payload)
     const [subjectData, setSubjectData] = useState<ISubjectCreateRequest>({
         createdById: auth?.id || "",
@@ -17,6 +19,7 @@ export default function SubjectCreateBlock() {
     useEffect(() => {
         if (isSubjectCreated === true) {
             toast.success("Дисциплина успешно создан");
+            navigate("/subjects")
         }
     }, [isSubjectCreated])
 

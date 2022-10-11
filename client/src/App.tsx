@@ -41,6 +41,7 @@ import Subjects from './pages/subjects/Subjects';
 import SubjectCreate from './pages/subjects/SubjectCreate';
 import Subject from './pages/subjects/Subject';
 import SubjectAddGroup from './pages/subjects/SubjectAddGroups';
+import SubjectGroup from './pages/subjects/SubjectGroup';
 
 function App() {
     const isLoading = useAppSelector(state => state.loader.isLoading)
@@ -84,6 +85,7 @@ function App() {
                     <Route path="subjects/create" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<SubjectCreate />} />} />
                     <Route path="subjects/:id" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<Subject />} />} />
                     <Route path="subjects/:id/addGroups" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<SubjectAddGroup />} />} />
+                    <Route path="subjects/:subjectId/:groupId" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<SubjectGroup />} />} />
 
                     <Route path="users" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<Users />} />} />
                     <Route path="users/create" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<UserCreate />} />} />

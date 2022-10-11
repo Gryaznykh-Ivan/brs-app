@@ -2,8 +2,9 @@ import React, { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import BackBlock from '../../components/BackBlock'
-import GroupCard from '../../components/groups/GroupCard'
+import SubjectGroupCard from '../../components/subjects/SubjectGroupCard'
 import SubjectHeaderBlock from '../../components/subjects/SubjectHeaderBlock'
+import SubjectSettingsBlock from '../../components/subjects/SubjectSettingsBlock'
 import { useGetSubjectQuery, useRemoveGroupFromSubjectMutation, useRemoveSubjectMutation } from '../../services/subjectService'
 
 export default function Subject() {
@@ -42,19 +43,23 @@ export default function Subject() {
                     key={data.data.id}
                     id={data.data.id}
                     title={data.data.title}
-                    createdByFIO={data.data.createdByFIO}
+                    description={data.data.createdByFIO}
                     onDelete={onDelete}
                 />
-                <div className="grid grid-cols-2 gap-2">
-
-                    {data.data.Groups.map(group => <GroupCard
-                        key={ group.id }
-                        id={ group.id }
-                        studentCount={ group.studentsCount }
-                        isDeletable={ true }
-                        onDelete={onGroupRemoveFromSubject}
-                    />)}
-                </div>
+                {data.data.Groups.length === 0 && <div className="bg-white rounded-lg p-4 shadow-sm text-xl text-center leading-6">Групп изучающих дисциплину нет<br /><span className="text-tgrey text-sm">Группу можно добавить нажав на зеленную кнопку в шапке дисциплины</span></div>}
+                {data.data.Groups.length !== 0 &&
+                    <div className="grid grid-cols-2 gap-2">
+                        {data.data.Groups.map(group => <SubjectGroupCard
+                            key={group.id}
+                            id={group.id}
+                            subjectId={id}
+                            studentCount={group.studentsCount}
+                            isDeletable={true}
+                            onDelete={onGroupRemoveFromSubject}
+                        />)}
+                    </div>
+                }
+                <SubjectSettingsBlock />
             </>}
         </div>
     )

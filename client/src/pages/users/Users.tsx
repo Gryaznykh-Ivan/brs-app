@@ -56,7 +56,7 @@ export default function Users() {
                             id={user.id}
                             position={user.role}
                             FIO={user.FIO}
-                            group={user.group}
+                            group={user.groupId}
                             isDeletable={true}
                             isEditable={true}
                             onDelete={onUserDelete}

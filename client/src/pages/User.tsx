@@ -18,7 +18,7 @@ export default function User() {
                 fullname={user.FIO}
                 birthday={user.birthday && new Date(user.birthday).toLocaleDateString()}
                 email={user.email}
-                group={user.group}
+                group={user.groupId}
                 position={user.role}
             />
         </div>

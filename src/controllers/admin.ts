@@ -44,7 +44,7 @@ const createUser = async (ctx: Context) => {
                 lastName: lastName,
                 birthday: validator.isEmpty(birthday) === false ? new Date(birthday) : null,
                 password: validator.isEmpty(password) === false ? await bcrypt.hash(password, 8) : null,
-                group: validator.isEmpty(group) === false ? group : null,
+                groupId: validator.isEmpty(group) === false ? group : null,
                 role: role
             }
         });
@@ -107,7 +107,7 @@ const changeUserSettings = async (ctx: Context) => {
                     lastName: lastName,
                     birthday: validator.isEmpty(birthday) === false ? new Date(birthday) : null,
                     password: validator.isEmpty(password) === false ? await bcrypt.hash(password, 8) : null,
-                    group: validator.isEmpty(group) === false ? group : null,
+                    groupId: validator.isEmpty(group) === false ? group : null,
                     role: role
                 }
             })

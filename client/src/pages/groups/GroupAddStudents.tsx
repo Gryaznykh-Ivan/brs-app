@@ -9,7 +9,7 @@ import { useLazyGetUserSearchQuery } from '../../services/userService';
 import { IErrorResponse, UserRoles } from '../../types/api';
 
 export default function GroupAddStudents() {
-    const { id="" } = useParams()
+    const { id = "" } = useParams()
     const [getUserSearch, { data }] = useLazyGetUserSearchQuery();
     const [addStudentToGroup, { error: addStudentToGroupError }] = useAddStudentToGroupMutation();
     const [query, setQuery] = useState({
@@ -58,24 +58,16 @@ export default function GroupAddStudents() {
                             id={user.id}
                             position={user.role}
                             FIO={user.FIO}
-                            group={user.group}
+                            group={user.groupId}
                             isDeletable={false}
                             isEditable={false}
                             onDelete={() => { }}
                             buttons={
-                                user.group === null
-                                    ? user.role !== UserRoles.TEACHER 
-                                        ? [{
-                                            name: "Добавить",
-                                            color: "bg-green-600",
-                                            callback: onAddStudentToGroup
-                                        }]
-                                        : []
-                                    : [{
-                                        name: "Уже имеет группу",
-                                        color: "bg-gray-400",
-                                        disabled: true
-                                    }]
+                                [{
+                                    name: "Добавить",
+                                    color: "bg-green-600",
+                                    callback: onAddStudentToGroup
+                                }]
                             }
                         />
                     )}

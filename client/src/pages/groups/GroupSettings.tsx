@@ -51,7 +51,7 @@ export default function GroupSettings() {
                         id={ student.id }
                         position={ student.role }
                         FIO={ student.FIO }
-                        group={ student.group }
+                        group={ student.groupId }
                         isDeletable={true}
                         isEditable={false}
                         onDelete={onStudentRemoveFromGroup}

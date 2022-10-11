@@ -27,15 +27,15 @@ model User {
   FIO       String    @db.VarChar(64)
   birthday  DateTime?
   email     String    @unique @db.VarChar(32)
-  group     String?   @db.VarChar(4)
+  groupId     String?   @db.VarChar(4)
   password  String?   @db.VarChar(64)
   code      String?   @db.VarChar(64)
   role      UserRole  @default(STUDENT)
-  Group     Group?    @relation(fields: [group], references: [id], onDelete: SetNull, onUpdate: Cascade)
-  Subjects  Subject[]
+  group     Group?    @relation(fields: [groupId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  subjects  Subject[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  Mark      Mark[]
+  marks     Mark[]
 
   @@fulltext([FIO])
 }
@@ -44,33 +44,32 @@ model Group {
   id           String    @id @db.VarChar(4)
   faculty      Int?      @db.SmallInt
   foundingDate DateTime?
-  Strudents    User[]
+  strudents    User[]
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
-  Subjects     Subject[]
+  subjects     Subject[]
   Table        Table[]
 }
 
 model Subject {
-  id           String      @id @default(uuid())
-  type         SubjectType @default(DISCIPLINE)
-  createdByFIO String      @db.VarChar(64)
-  createdBy    User        @relation(fields: [createdById], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  title        String      @db.VarChar(128)
-  Groups       Group[]
-  Tables       Table[]
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
-  createdById  String
+  id          String      @id @default(uuid())
+  type        SubjectType @default(DISCIPLINE)
+  createdBy   User        @relation(fields: [createdById], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  title       String      @db.VarChar(128)
+  groups      Group[]
+  tables      Table[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  createdById String
 
-  @@fulltext([title, createdByFIO])
+  @@fulltext([title])
 }
 
 model Table {
   id        String   @id @default(uuid())
   title     String   @db.VarChar(64)
-  Group     Group?   @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  Subject   Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  group     Group?   @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  subject   Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   subjectId String
   groupId   String?  @db.VarChar(4)
   Mark      Mark[]
@@ -82,8 +81,8 @@ model Mark {
   id        String   @id @default(uuid())
   title     String   @db.VarChar(16)
   value     Int      @db.TinyInt
-  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  Table     Table    @relation(fields: [tableId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  table     Table    @relation(fields: [tableId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   tableId   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

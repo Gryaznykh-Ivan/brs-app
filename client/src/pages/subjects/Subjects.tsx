@@ -36,19 +36,21 @@ export default function Subjects() {
             />
             {data && <>
                 {data.data.length === 0 && <div className="bg-white rounded-lg p-4 shadow-md text-xl text-center">По вашему запросу ничего не найдено</div>}
-                <div className="grid grid-cols-2 gap-4">
-                    {data.data.map(subject =>
-                        <SubjectCard
-                            key={subject.id}
-                            id={subject.id}
-                            createdByFIO={subject.createdByFIO}
-                            title={subject.title}
-                            type={subject.type}
-                            updatedAt={subject.updatedAt}
-                        />
-                        
-                    )}
-                </div>
+                {data.data.length !== 0 &&
+                    <div className="grid grid-cols-2 gap-4">
+                        {data.data.map(subject =>
+                            <SubjectCard
+                                key={subject.id}
+                                id={subject.id}
+                                createdByFIO={subject.createdByFIO}
+                                title={subject.title}
+                                type={subject.type}
+                                updatedAt={subject.updatedAt}
+                            />
+
+                        )}
+                    </div>
+                }
                 {data.data.length === query.limit && <button className="w-full h-10 text-xl text-tgrey hover:bg-gray-200 transition-colors rounded-xl" onClick={onLoadMore}>Показать другие результаты</button>}
             </>}
         </div>
