@@ -27,7 +27,7 @@ model User {
   FIO       String    @db.VarChar(64)
   birthday  DateTime?
   email     String    @unique @db.VarChar(32)
-  groupId     String?   @db.VarChar(4)
+  groupId   String?   @db.VarChar(4)
   password  String?   @db.VarChar(64)
   code      String?   @db.VarChar(64)
   role      UserRole  @default(STUDENT)
@@ -44,7 +44,7 @@ model Group {
   id           String    @id @db.VarChar(4)
   faculty      Int?      @db.SmallInt
   foundingDate DateTime?
-  students    User[]
+  students     User[]
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   subjects     Subject[]
@@ -68,13 +68,21 @@ model Subject {
 model Table {
   id        String   @id @default(uuid())
   title     String   @db.VarChar(64)
-  group     Group?   @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   subject   Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   subjectId String
-  groupId   String?  @db.VarChar(4)
-  Mark      Mark[]
+  group     Group   @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  groupId   String  @db.VarChar(4)
+  mark      Mark[]
+  columns   Column[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Column {
+  id      String  @id @default(uuid())
+  title   String  @db.VarChar(16)
+  table   Table?  @relation(fields: [tableId], references: [id])
+  tableId String?
 }
 
 model Mark {

@@ -117,3 +117,39 @@ export type ChangeSubjectRequest = {
     title: string;
     type: keyof typeof SubjectTypes;
 }
+
+export type CreateTableRequest = {
+    title: string;
+    subjectId: string;
+    groupId: string;
+}
+
+export type RemoveTableRequest = {
+    id: string;
+}
+
+export type AddColumnRequest = {
+    tableId: string;
+    title: string;
+}
+
+export type RemoveColumnRequest = {
+    id: string;
+}
+
+export type ChangeColumnRequest = {
+    id: string;
+    title: string;
+}
+
+export type SetMarkRequest = {
+    title: string;
+    value: number;
+    tableId: string;
+    userId: string;
+}
+
+export type GetTablesNameRequest = {
+    groupId: string;
+    subjectId: string;
+}

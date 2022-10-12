@@ -220,6 +220,10 @@ const changeSubjectSettings = async (ctx: Context) => {
     const { id } = <IdParamsRequest>ctx.params;
     const { type, title } = <ChangeSubjectRequest>ctx.request.body;
 
+    if (validator.isEmpty(title) === true) {
+        return BadRequest(ctx, "Название курса не может быть пустым")
+    }
+
     try {
         await prisma.subject.update({
             where: { id },
