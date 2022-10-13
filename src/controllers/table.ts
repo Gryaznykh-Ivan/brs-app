@@ -5,8 +5,8 @@ import prisma from '../db'
 import { AddColumnRequest, ChangeColumnRequest, CreateGroupRequest, CreateTableRequest, GetByIdRequest, GetTablesNameRequest, IdParamsRequest, RemoveColumnRequest, RemoveTableRequest, SetMarkRequest } from '../types/requestTypes'
 import { BadRequest, Ok } from '../utils/response'
 
-const getTablesName = async (ctx: Context) => {
-    const { groupId, subjectId } = <GetTablesNameRequest>ctx.request.body
+const getTableNames = async (ctx: Context) => {
+    const { groupId, subjectId } = <GetTablesNameRequest>ctx.request.query
 
     const tables = await prisma.table.findMany({
         where: { groupId, subjectId },
@@ -276,7 +276,7 @@ const setMark = async (ctx: Context) => {
 }
 
 export = {
-    getTablesName,
+    getTableNames,
     getTableById,
     createTable,
     removeTable,

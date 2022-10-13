@@ -33,12 +33,12 @@ router.delete("/subject/:id/remove", roleFilter([UserRoles.ADMIN]), subjectContr
 
 // table page routes
 router.put("/table/create", roleFilter([UserRoles.ADMIN]), tableController.createTable)
+router.get("/table/getNames", roleFilter([UserRoles.ADMIN]), tableController.getTableNames)
 router.get("/table/:id", roleFilter([UserRoles.ADMIN]), tableController.getTableById)
-router.get("/table/:id/getNames", roleFilter([UserRoles.ADMIN]), tableController.getTablesName)
-router.post("/table/:id/addColumn", roleFilter([UserRoles.ADMIN]), tableController.addColumn)
-router.post("/table/:id/removeColumn", roleFilter([UserRoles.ADMIN]), tableController.removeColumn)
+router.put("/table/:id/setMark", roleFilter([UserRoles.ADMIN]), tableController.setMark)
+router.put("/table/:id/addColumn", roleFilter([UserRoles.ADMIN]), tableController.addColumn)
 router.post("/table/:id/changeColumn", roleFilter([UserRoles.ADMIN]), tableController.changeColumnName)
-router.post("/table/:id/setMark", roleFilter([UserRoles.ADMIN]), tableController.setMark)
 router.delete("/table/:id/remove", roleFilter([UserRoles.ADMIN]), tableController.removeTable)
+router.delete("/table/:id/removeColumn", roleFilter([UserRoles.ADMIN]), tableController.removeColumn)
 
 export default router.routes();

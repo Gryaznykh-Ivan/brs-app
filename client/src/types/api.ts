@@ -65,6 +65,27 @@ export interface ISubjectCard {
     updatedAt: string;
 }
 
+export interface ITableName {
+    id: string;
+    title: string;
+} 
+
+export interface ITable {
+    // todo
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export interface IResponse<T> {
     success: boolean;
@@ -219,18 +240,89 @@ export interface ISubjectCreateRequest {
     createdById: string;
 }
 
-export interface ITableCreateRequest {
-    title: string;
-}
 
 export interface ITableSelectRequest {
     id: string;
 }
 
+export interface ITableGetNamesRequest {
+    groupId: string;
+    subjectId: string;
+}
+
+export interface ITableGetByIdRequest {
+    id: string;
+}
+
+export interface ITableCreateRequest {
+    title: string;
+    groupId: string;
+    subjectId: string;
+}
+
+export interface ITableRemoveRequest {
+    id: string;
+}
+
+export interface ITableAddColumnRequest {
+    tableId: string;
+    title: string;
+}
+
+export interface ITableRemoveColumnRequest {
+    id: string;
+}
+
+export interface ITableChangeColumnNameRequest {
+    tableId: string;
+    columnId: string;
+    title: string;
+}
+
+export interface ITableSetMarkRequest {
+    tableId: string;
+    title: string;
+    userId: string;
+    value: number
+}
 
 
 
 
+
+export interface ITableSetMarkResponse {
+    success: boolean;
+}
+
+export interface ITableChangeColumnNameResponse {
+    success: boolean;
+}
+
+export interface ITableRemoveColumnResponse {
+    success: boolean;
+}
+
+export interface ITableAddColumnResponse {
+    success: boolean;
+}
+
+export interface ITableCreateResponse {
+    success: boolean;
+}
+
+export interface ITableCreateResponse {
+    success: boolean;
+}
+
+export interface ITableGetByIdResponse {
+    success: boolean;
+    data: ITable;
+}
+
+export interface ITableGetNamesResponse {
+    success: boolean;
+    data: ITableName[]
+} 
 
 export interface ILoginThroughEmailResponse {
     success: boolean;

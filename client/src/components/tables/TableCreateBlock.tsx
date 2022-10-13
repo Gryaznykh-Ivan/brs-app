@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
+import { useParams } from 'react-router-dom';
 import { ITableCreateRequest } from '../../types/api';
 
 export default function TableCreateBlock() {
+    const { groupId="", subjectId="" } = useParams()
     const [tableData, setTableData] = useState<ITableCreateRequest>({
-        title: ""
+        title: "",
+        groupId,
+        subjectId
     });
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
