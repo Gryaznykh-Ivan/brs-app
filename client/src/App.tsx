@@ -42,6 +42,7 @@ import SubjectCreate from './pages/subjects/SubjectCreate';
 import Subject from './pages/subjects/Subject';
 import SubjectAddGroup from './pages/subjects/SubjectAddGroups';
 import SubjectGroup from './pages/subjects/SubjectGroup';
+import Table from './pages/table/Table';
 
 function App() {
     const isLoading = useAppSelector(state => state.loader.isLoading)
@@ -103,6 +104,10 @@ function App() {
                 <Route path="/intro" element={<EmptyTemplate />}>
                     <Route path="" element={<Intro />} />
                 </Route>
+                <Route path="/table" element={<EmptyTemplate />}>
+                    <Route path=":id" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<Table />} />} />
+                </Route>
+                
                 <Route path="/auth" element={<AuthTemplate />}>
                     <Route path="login" element={<Login />} />
                     <Route path="loginThroughEmail" element={<LoginThroughEmail />} />

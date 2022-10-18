@@ -31,6 +31,11 @@ const getTableById = async (ctx: Context) => {
                     title: true
                 }
             },
+            subject: {
+                select: {
+                    title: true
+                }
+            },
             group: {
                 include: {
                     students: {
@@ -39,21 +44,9 @@ const getTableById = async (ctx: Context) => {
                         }],
                         select: {
                             id: true,
-                            name: true,
-                            FIO: true,
-                            lastName: true,
-                            birthday: true,
-                            email: true,
-                            groupId: true,
-                            role: true
+                            FIO: true
                         }
                     }
-                }
-            },
-            subject: {
-                select: {
-                    id: true,
-                    title: true
                 }
             }
         }
@@ -72,7 +65,13 @@ const getTableById = async (ctx: Context) => {
 
 
     const result = {
-        ...table,
+        id: table.id,
+        title: table.title,
+        subjectId: table.subjectId,
+        groupId: table.groupId,
+        columns: table.columns,
+        students: table.group.students,
+        subjectTitle: table.subject.title,
         marks
     }
 
@@ -104,7 +103,11 @@ const createTable = async (ctx: Context) => {
                 groupId
             }
         })
+
+        return Ok(ctx)
     } catch (e) {
+        console.log(123);
+
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
             return BadRequest(ctx, "Создать таблицу не удалось. Попробуйте позже или обратитесь к администратору")
         }
@@ -154,6 +157,8 @@ const addColumn = async (ctx: Context) => {
                 tableId
             }
         })
+
+        return Ok(ctx)
     }
     catch (e) {
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -266,6 +271,8 @@ const setMark = async (ctx: Context) => {
                 value
             }
         })
+
+        return Ok(ctx)
     } catch (e) {
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
             return BadRequest(ctx, "Обновить данные не удалось. Попробуйте позже или обратитесь к администратору")

@@ -68,5 +68,12 @@ export const tableService = appApi.injectEndpoints({
 })
 
 export const {
-
+    useGetTableByIdQuery,
+    useGetTableNamesQuery,
+    useCreateTableMutation,
+    useRemoveTableMutation,
+    useAddColumnMutation,
+    useRemoveColumnMutation,
+    useChangeColumnNameMutation,
+    useSetMarkMutation
 } = tableService

@@ -68,10 +68,31 @@ export interface ISubjectCard {
 export interface ITableName {
     id: string;
     title: string;
-} 
+}
+
+export interface ITableStudent {
+    id: string;
+    FIO: string;
+}
+
+export interface ITableColumn {
+    id: string;
+    title: string;
+}
+
+export interface IMark {
+
+}
 
 export interface ITable {
-    // todo
+    id: string;
+    title: string;
+    subjectId: string;
+    groupId: string;
+    subjectTitle: string;
+    columns: ITableColumn[];
+    students: ITableStudent[];
+    marks: IMark[];
 }
 
 
@@ -322,7 +343,7 @@ export interface ITableGetByIdResponse {
 export interface ITableGetNamesResponse {
     success: boolean;
     data: ITableName[]
-} 
+}
 
 export interface ILoginThroughEmailResponse {
     success: boolean;
