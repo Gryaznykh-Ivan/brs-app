@@ -138,12 +138,12 @@ export type RemoveColumnRequest = {
 }
 
 export type ChangeColumnRequest = {
-    id: string;
+    columnId: string;
     title: string;
 }
 
 export type SetMarkRequest = {
-    title: string;
+    columnId: string;
     value: number;
     tableId: string;
     userId: string;

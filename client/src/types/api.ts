@@ -81,7 +81,10 @@ export interface ITableColumn {
 }
 
 export interface IMark {
-
+    id: string;
+    columnId: string;
+    userId: string;
+    value: number;
 }
 
 export interface ITable {
@@ -302,9 +305,9 @@ export interface ITableChangeColumnNameRequest {
 
 export interface ITableSetMarkRequest {
     tableId: string;
-    title: string;
+    columnId: string;
     userId: string;
-    value: number
+    value: number | null;
 }
 
 

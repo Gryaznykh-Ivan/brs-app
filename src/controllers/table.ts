@@ -10,7 +10,7 @@ const getTableNames = async (ctx: Context) => {
 
     const tables = await prisma.table.findMany({
         where: { groupId, subjectId },
-        select: { 
+        select: {
             id: true,
             title: true
         }
@@ -26,10 +26,19 @@ const getTableById = async (ctx: Context) => {
         where: { id },
         include: {
             columns: {
-                select: {
-                    id: true,
-                    title: true
-                }
+                include: {
+                    marks: {
+                        select: {
+                            id: true,
+                            columnId: true,
+                            userId: true,
+                            value: true
+                        }
+                    }
+                },
+                orderBy: [{
+                    createdAt: "asc"
+                }],
             },
             subject: {
                 select: {
@@ -56,23 +65,19 @@ const getTableById = async (ctx: Context) => {
         return BadRequest(ctx, "Таблица не найден")
     }
 
-    const marks = await prisma.mark.groupBy({
-        by: ['title'],
-        where: {
-            tableId: id
-        }
-    })
-
 
     const result = {
         id: table.id,
         title: table.title,
         subjectId: table.subjectId,
         groupId: table.groupId,
-        columns: table.columns,
+        columns: table.columns.map(column => ({ id: column.id, title: column.title })),
         students: table.group.students,
         subjectTitle: table.subject.title,
-        marks
+        marks: table.columns.reduce<{ id: string; columnId: string; userId: string; value: number; }[]>((a,c) => {
+            c.marks.forEach(mark => a.push(mark))
+            return a
+        }, [])
     }
 
     return Ok(ctx, result);
@@ -106,8 +111,6 @@ const createTable = async (ctx: Context) => {
 
         return Ok(ctx)
     } catch (e) {
-        console.log(123);
-
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
             return BadRequest(ctx, "Создать таблицу не удалось. Попробуйте позже или обратитесь к администратору")
         }
@@ -179,10 +182,7 @@ const removeColumn = async (ctx: Context) => {
     }
 
     try {
-        await prisma.$transaction([
-            prisma.column.delete({ where: { id } }),
-            prisma.mark.deleteMany({ where: { title: column.title } })
-        ])
+        await prisma.column.delete({ where: { id } })
 
         return Ok(ctx);
     } catch (e) {
@@ -196,10 +196,14 @@ const removeColumn = async (ctx: Context) => {
 
 const changeColumnName = async (ctx: Context) => {
     const { id } = <IdParamsRequest>ctx.params;
-    const { id: columnId, title } = <ChangeColumnRequest>ctx.request.body;
+    const { columnId, title } = <ChangeColumnRequest>ctx.request.body;
 
     if (validator.isEmpty(title) === true) {
         return BadRequest(ctx, "Название столбца не может быть пустым")
+    }
+
+    if (title.length > 16) {
+        return BadRequest(ctx, "Название столбца не должно превышать 16 символов")
     }
 
     const column = await prisma.column.findFirst({ where: { id: columnId, tableId: id } })
@@ -208,15 +212,12 @@ const changeColumnName = async (ctx: Context) => {
     }
 
     try {
-        await prisma.$transaction([
-            prisma.column.update({
-                where: { id: columnId },
-                data: {
-                    title
-                }
-            }),
-            prisma.mark.updateMany({ where: { title: column.title }, data: { title } })
-        ])
+        await prisma.column.update({
+            where: { id: columnId },
+            data: {
+                title
+            }
+        })
 
         return Ok(ctx)
     } catch (e) {
@@ -229,7 +230,7 @@ const changeColumnName = async (ctx: Context) => {
 }
 
 const setMark = async (ctx: Context) => {
-    const { tableId, title, userId, value } = <SetMarkRequest>ctx.request.body;
+    const { tableId, columnId, userId, value } = <SetMarkRequest>ctx.request.body;
 
     const table = await prisma.table.findFirst({
         where: {
@@ -246,31 +247,34 @@ const setMark = async (ctx: Context) => {
         return BadRequest(ctx, "Таблица не найден");
     }
 
-    const column = await prisma.column.findFirst({ where: { tableId, title } })
+    const column = await prisma.column.findFirst({ where: { id: columnId } })
     if (column === null) {
         return BadRequest(ctx, "Столбец не найден");
     }
 
-    const mark = await prisma.mark.findFirst({ where: { tableId, title, userId } })
+    const mark = await prisma.mark.findFirst({ where: { columnId, userId } })
 
     try {
-        await prisma.mark.upsert({
-            where: {
-                id: mark?.id
-            },
-            update: {
-                tableId,
-                userId,
-                title,
-                value
-            },
-            create: {
-                tableId,
-                userId,
-                title,
-                value
+        if (mark === null) {
+            if (value === null) {
+                return Ok(ctx)
             }
-        })
+
+            await prisma.mark.create({ data: { userId, columnId, value }})
+        } else {
+            if (value === null) {
+                await prisma.mark.delete({ where: { id: mark.id } })
+    
+                return Ok(ctx)
+            }
+
+            await prisma.mark.update({
+                where: { id: mark.id },
+                data: {
+                    value
+                }
+            })
+        }
 
         return Ok(ctx)
     } catch (e) {

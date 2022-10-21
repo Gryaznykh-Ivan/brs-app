@@ -70,29 +70,30 @@ model Table {
   title     String   @db.VarChar(64)
   subject   Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   subjectId String
-  group     Group   @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  groupId   String  @db.VarChar(4)
-  mark      Mark[]
+  group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  groupId   String   @db.VarChar(4)
   columns   Column[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Column {
-  id      String  @id @default(uuid())
-  title   String  @db.VarChar(16)
-  table   Table?  @relation(fields: [tableId], references: [id])
-  tableId String?
+  id        String   @id @default(uuid())
+  title     String   @db.VarChar(16)
+  marks     Mark[]
+  table     Table?   @relation(fields: [tableId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  tableId   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Mark {
   id        String   @id @default(uuid())
-  title     String   @db.VarChar(16)
   value     Int      @db.TinyInt
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  table     Table    @relation(fields: [tableId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  tableId   String
+  userId    String
+  column    Column   @relation(fields: [columnId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  columnId  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  userId    String
 }
