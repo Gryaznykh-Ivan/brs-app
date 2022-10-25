@@ -3,10 +3,12 @@ import { toast } from 'react-toastify'
 import GroupCard from '../../components/groups/GroupCard'
 import GroupCreateCard from '../../components/groups/GroupCreateCard'
 import SearchBlock from '../../components/SearchBlock'
+import { useAppSelector } from '../../hooks/store'
 import { useCreateGroupMutation, useLazyGetGroupSearchQuery, useRemoveGroupMutation } from '../../services/groupService'
-import { IErrorResponse } from '../../types/api'
+import { IErrorResponse, UserRoles } from '../../types/api'
 
 export default function Groups() {
+    const auth = useAppSelector(state => state.auth.payload)
     const [createGroup, { isSuccess: isGroupCreated, error }] = useCreateGroupMutation()
     const [removeGroup, { isSuccess: isGroupRemoved }] = useRemoveGroupMutation()
     const [getGroupSearch, { data }] = useLazyGetGroupSearchQuery();
@@ -60,19 +62,23 @@ export default function Groups() {
                 buttons={[]}
                 onSearch={onSearch}
             />
-            {data && <>
+            {data && auth && <>
                 <div className="grid grid-cols-2 gap-2">
-                    <GroupCreateCard
-                        onCreate={onCreate}
-                    />
+
+                    {auth.role === UserRoles.ADMIN &&
+                        <GroupCreateCard
+                            onCreate={onCreate}
+                        />
+                    }
 
                     {data.data.map(group => <GroupCard
-                        key={ group.id }
-                        id={ group.id }
-                        studentCount={ group.studentsCount }
-                        isDeletable={ true }
+                        key={group.id}
+                        id={group.id}
+                        studentCount={group.studentsCount}
+                        isDeletable={ auth.role === UserRoles.ADMIN }
                         onDelete={onDelete}
                     />)}
+
                 </div>
                 {data.data.length === query.limit && <button className="w-full h-10 text-xl text-tgrey hover:bg-gray-200 transition-colors rounded-xl" onClick={onLoadMore}>Показать другие результаты</button>}
             </>}

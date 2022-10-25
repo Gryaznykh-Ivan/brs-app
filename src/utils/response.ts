@@ -16,11 +16,20 @@ const Unauthorized  = (ctx: Context, msg: string) => {
     }
 }
 
+
 const BadRequest = (ctx: Context, msg: string) => {
     ctx.status = 400;
     return ctx.body = {
         success: false,
         error: msg || "Bad request"
+    }
+}
+
+const Forbidden = (ctx: Context, msg?: string) => {
+    ctx.status = 403;
+    return ctx.body = {
+        success: false,
+        error: msg || "Forbidden"
     }
 }
 
@@ -44,5 +53,6 @@ export {
     BadRequest,
     Unauthorized,
     Created,
+    Forbidden,
     Ok
 }

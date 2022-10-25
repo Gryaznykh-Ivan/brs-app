@@ -100,7 +100,13 @@ export default function UserSettingsBlock() {
                         <div className="flex items-center mb-1">
                             <label className="font-bold ml-2 text-sm" htmlFor="">Роль</label>
                         </div>
-                        <input type="text" name="role" className="bg-grey rounded-lg px-3 outline-none h-8 placeholder-black" value={userData.role} onChange={onInputChange} />
+                        <input type="text" list="role" name="role" className="bg-grey rounded-lg px-3 outline-none h-8 placeholder-black" value={userData.role} onChange={onInputChange} />
+                        <datalist id="role">
+                            <option value="STUDENT" />
+                            <option value="HEADMAN" />
+                            <option value="TEACHER" />
+                            <option value="ADMIN" />
+                        </datalist>
                     </div>
                     <div className="flex flex-col">
                         <div className="flex items-center mb-1">

@@ -3,10 +3,19 @@ import { Context } from 'koa'
 import validator from 'validator'
 import prisma from '../db'
 import { AddGroupToSubjectRequest, ChangeSubjectRequest, CreateSubjectRequest, GetByIdRequest, GetBySearchRequest, IdParamsRequest, RemoveGroupFromSubjectRequest, UserRoles } from '../types/requestTypes'
-import { BadRequest, Ok } from '../utils/response'
+import { BadRequest, Forbidden, Ok } from '../utils/response'
+
 
 const getSubjectById = async (ctx: Context) => {
     const { id } = <GetByIdRequest>ctx.params
+    const { id: userId, role } = ctx.request.user
+
+    if (role === UserRoles.TEACHER) {
+        const checkPermission = !!(await prisma.subject.findFirst({ where: { id, createdById: userId }}))
+        if (checkPermission === false) {
+            return Forbidden(ctx);
+        }
+    }
 
     const subject = await prisma.subject.findFirst({
         where: { id },
@@ -53,6 +62,7 @@ const getSubjectById = async (ctx: Context) => {
 }
 
 const getSubjectBySearch = async (ctx: Context) => {
+    const { id: userId, role } = ctx.request.user
     const { q = "", limit = 10, skip = 0 } = <GetBySearchRequest>ctx.query;
 
     const subjects = await prisma.subject.findMany({
@@ -68,11 +78,31 @@ const getSubjectBySearch = async (ctx: Context) => {
         where: {
             OR: [
                 {
+                    groups: (role === UserRoles.STUDENT || role === UserRoles.HEADMAN) ? {
+                        some: {
+                            students: {
+                                some: {
+                                    id: userId,
+                                }
+                            }
+                        }
+                    } : undefined,
+                    createdById: role === UserRoles.TEACHER ? userId : undefined,
                     title: {
                         search: q.length > 0 ? q : undefined
                     }
                 },
                 {
+                    groups: (role === UserRoles.STUDENT || role === UserRoles.HEADMAN) ? {
+                        some: {
+                            students: {
+                                some: {
+                                    id: userId,
+                                }
+                            }
+                        }
+                    } : undefined,
+                    createdById: role === UserRoles.TEACHER ? userId : undefined,
                     createdBy: {
                         FIO: {
                             search: q.length > 0 ? q : undefined
@@ -129,6 +159,14 @@ const createSubject = async (ctx: Context) => {
 
 const removeSubject = async (ctx: Context) => {
     const { id } = <IdParamsRequest>ctx.params;
+    const { id: userId, role } = ctx.request.user
+
+    if (role === UserRoles.TEACHER) {
+        const checkPermission = !!(await prisma.subject.findFirst({ where: { id, createdById: userId }}))
+        if (checkPermission === false) {
+            return Forbidden(ctx);
+        }
+    }
 
     const subject = await prisma.subject.findFirst({ where: { id } })
     if (subject === null) {
@@ -147,6 +185,14 @@ const removeSubject = async (ctx: Context) => {
 const addGroupToSubject = async (ctx: Context) => {
     const { id } = <IdParamsRequest>ctx.params;
     const { id: groupId } = <AddGroupToSubjectRequest>ctx.request.body;
+    const { id: userId, role } = ctx.request.user
+
+    if (role === UserRoles.TEACHER) {
+        const checkPermission = !!(await prisma.subject.findFirst({ where: { id, createdById: userId }}))
+        if (checkPermission === false) {
+            return Forbidden(ctx);
+        }
+    }
 
     const group = await prisma.group.findFirst({ where: { id: groupId } });
     if (group === null) {
@@ -183,6 +229,14 @@ const addGroupToSubject = async (ctx: Context) => {
 const removeGroupFromSubject = async (ctx: Context) => {
     const { id } = <IdParamsRequest>ctx.params;
     const { id: groupId } = <RemoveGroupFromSubjectRequest>ctx.request.body;
+    const { id: userId, role } = ctx.request.user
+
+    if (role === UserRoles.TEACHER) {
+        const checkPermission = !!(await prisma.subject.findFirst({ where: { id, createdById: userId }}))
+        if (checkPermission === false) {
+            return Forbidden(ctx);
+        }
+    }
 
     const group = await prisma.group.findFirst({ where: { id: groupId } });
     if (group === null) {
@@ -219,6 +273,14 @@ const removeGroupFromSubject = async (ctx: Context) => {
 const changeSubjectSettings = async (ctx: Context) => {
     const { id } = <IdParamsRequest>ctx.params;
     const { type, title } = <ChangeSubjectRequest>ctx.request.body;
+    const { id: userId, role } = ctx.request.user
+
+    if (role === UserRoles.TEACHER) {
+        const checkPermission = !!(await prisma.subject.findFirst({ where: { id, createdById: userId }}))
+        if (checkPermission === false) {
+            return Forbidden(ctx);
+        }
+    }
 
     if (validator.isEmpty(title) === true) {
         return BadRequest(ctx, "Название курса не может быть пустым")

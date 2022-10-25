@@ -8,12 +8,13 @@ interface IProps {
     createdByFIO: string;
     title: string;
     updatedAt: string;
+    link: string;
 }
 
-export default function SubjectCard({ id, type, createdByFIO, title, updatedAt }: IProps) {
+export default function SubjectCard({ id, type, createdByFIO, title, updatedAt, link }: IProps) {
     return (
         <div className="flex bg-white rounded-lg p-4 shadow-sm">
-            <Link to={`/subjects/${id}`} className="flex-1" >
+            <Link to={link} className="flex-1" >
                 <div className="flex">
                     <div className="flex justify-center items-center w-16 h-16 bg-grey rounded-full" >
                         <svg width="36" height="35" viewBox="0 0 36 35" fill="none" xmlns="http://www.w3.org/2000/svg">

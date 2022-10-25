@@ -3,7 +3,7 @@ import SearchBlock from '../../components/SearchBlock';
 import SubjectCard from '../../components/subjects/SubjectCard';
 import { useLazyGetSubjectSearchQuery } from '../../services/subjectService';
 
-export default function Subjects() {
+export default function SubjectsStudentView() {
     const [getSubjectSearch, { data }] = useLazyGetSubjectSearchQuery();
     const [query, setQuery] = useState({
         q: "",
@@ -27,11 +27,7 @@ export default function Subjects() {
         <div className="flex-1 space-y-4">
             <SearchBlock
                 name="Дисциплины"
-                buttons={[{
-                    name: "Создать",
-                    color: "bg-green-600",
-                    link: "/subjects/create"
-                }]}
+                buttons={[]}
                 onSearch={onSearch}
             />
             {data && <>
@@ -46,7 +42,7 @@ export default function Subjects() {
                                 title={subject.title}
                                 type={subject.type}
                                 updatedAt={subject.updatedAt}
-                                link={ `/subjects/${ subject.id }` }
+                                link={ `/brs/${ subject.id }` }
                             />
 
                         )}

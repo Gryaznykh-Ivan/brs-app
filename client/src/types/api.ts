@@ -192,6 +192,10 @@ export interface IGroupGetRequest {
     id: string;
 }
 
+export interface IGroupGetUserGroupRequest {
+    id: string;
+}
+
 export interface IGroupGetSearchRequest {
     q: string;
     limit: number;
@@ -405,6 +409,11 @@ export interface IUserRemoveResponse {
 export interface IGroupGetSearchResponse {
     success: boolean;
     data: IGroupCard[];
+}
+
+export interface IGroupGetUserGroupResponse {
+    success: boolean;
+    data: IGroup;
 }
 
 export interface IGroupSettingsChangeResponse {

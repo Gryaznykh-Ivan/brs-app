@@ -1,10 +1,18 @@
 import { appApi } from "../store/reducers/appApi";
-import { IGroupAddStudentRequest, IGroupAddStudentResponse, IGroupCreateRequest, IGroupCreateResponse, IGroupGetRequest, IGroupGetResponse, IGroupGetSearchRequest, IGroupGetSearchResponse, IGroupRemoveRequest, IGroupRemoveResponse, IGroupRemoveStudentRequest, IGroupRemoveStudentResponse, IGroupSettingsChangeRequest, IGroupSettingsChangeResponse } from "../types/api";
+import { IGroupAddStudentRequest, IGroupAddStudentResponse, IGroupCreateRequest, IGroupCreateResponse, IGroupGetRequest, IGroupGetResponse, IGroupGetSearchRequest, IGroupGetSearchResponse, IGroupGetUserGroupRequest, IGroupGetUserGroupResponse, IGroupRemoveRequest, IGroupRemoveResponse, IGroupRemoveStudentRequest, IGroupRemoveStudentResponse, IGroupSettingsChangeRequest, IGroupSettingsChangeResponse } from "../types/api";
 
 export const groupService = appApi.injectEndpoints({
     endpoints: bulider => ({
         getGroup: bulider.query<IGroupGetResponse, IGroupGetRequest>({
             query: ({ id }) => `group/${ id }`,
+            providesTags: ['Group']
+        }),
+        getUserGroup: bulider.query<IGroupGetUserGroupResponse, IGroupGetUserGroupRequest>({
+            query: (credentials) => ({
+                url: "group/getUserGroup",
+                method: "GET",
+                params: credentials
+            }),
             providesTags: ['Group']
         }),
         getGroupSearch: bulider.query<IGroupGetSearchResponse,IGroupGetSearchRequest>({
@@ -23,7 +31,7 @@ export const groupService = appApi.injectEndpoints({
                     id: userId
                 }
             }),
-            invalidatesTags: ['Users', 'Group']
+            invalidatesTags: ['Users', 'Group', 'User', 'Table']
         }),
         removeStudentFromGroup: bulider.mutation<IGroupRemoveStudentResponse, IGroupRemoveStudentRequest>({
             query: ({ id, userId }) => ({
@@ -33,7 +41,7 @@ export const groupService = appApi.injectEndpoints({
                     id: userId
                 }
             }),
-            invalidatesTags: ['Group']
+            invalidatesTags: ['Users', 'Group', 'User', 'Table']
         }),
         createGroup: bulider.mutation<IGroupCreateResponse, IGroupCreateRequest>({
             query: (credentials) => ({
@@ -49,20 +57,21 @@ export const groupService = appApi.injectEndpoints({
                 method: "POST",
                 body: credentials
             }),
-            invalidatesTags: ['Group']
+            invalidatesTags: ['Group', 'User', 'Subject', 'Table']
         }),
         removeGroup: bulider.mutation<IGroupRemoveResponse, IGroupRemoveRequest>({
             query: ({ id }) => ({
                 url: `group/${ id }/remove`,
                 method: "DELETE"
             }),
-            invalidatesTags: ['Groups']
+            invalidatesTags: ['Groups', 'User', 'Subject', 'Group']
         })
     })
 })
 
 export const {
     useGetGroupQuery,
+    useGetUserGroupQuery,
     useLazyGetGroupSearchQuery,
     useGetGroupSearchQuery,
     useAddStudentToGroupMutation,

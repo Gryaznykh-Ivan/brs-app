@@ -8,14 +8,16 @@ export const authService = appApi.injectEndpoints({
                 url: "auth/login",
                 method: "POST",
                 body: credentials
-            })
+            }),
+            invalidatesTags: ['User']
         }),
         register: bulider.mutation<IRegisterResponse, IRegisterRequest>({
             query: (credentials) => ({
                 url: "auth/register",
                 method: "PUT",
                 body: credentials
-            })
+            }),
+            invalidatesTags: ['User']
         }),
         sendVerificationCode: bulider.mutation<ISendVerificationCodeResponse, ISendVerificationCodeRequest>({
             query: (credentials) => ({
@@ -29,7 +31,8 @@ export const authService = appApi.injectEndpoints({
                 url: "auth/loginThroughEmail",
                 method: "POST",
                 body: credentials
-            })
+            }),
+            invalidatesTags: ['User']
         })
     })
 })

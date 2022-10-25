@@ -38,6 +38,39 @@ const getGroupById = async (ctx: Context) => {
     });
 }
 
+const getUserGroup = async (ctx: Context) => {
+    const { id } = <GetByIdRequest>ctx.query;
+    
+    const group = await prisma.group.findFirst({
+        where: { students: { some: { id }}},
+        include: {
+            students: {
+                select: {
+                    id: true,
+                    name: true,
+                    FIO: true,
+                    lastName: true,
+                    birthday: true,
+                    email: true,
+                    groupId: true,
+                    role: true
+                }
+            }
+        }
+    })
+
+    if (group === null) {
+        return BadRequest(ctx, "Группа не найден")
+    }
+
+    return Ok(ctx, {
+        id: group.id,
+        faculty: group.faculty,
+        foundingDate: group.foundingDate,
+        students: group.students
+    });
+}
+
 const getGroupsBySearch = async (ctx: Context) => {
     const { q = "", limit = 10, skip = 0, exclude } = <GetBySearchRequest>ctx.query;
 
@@ -230,6 +263,7 @@ const removeGroup = async (ctx: Context) => {
 
 export = {
     getGroupById,
+    getUserGroup,
     getGroupsBySearch,
     addStudentToGroup,
     removeStudentFromGroup,

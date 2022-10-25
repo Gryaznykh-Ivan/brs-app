@@ -5,11 +5,14 @@ import BackBlock from '../../components/BackBlock'
 import GroupHeaderBlock from '../../components/groups/GroupHeaderBlock'
 import GroupSettingsBlock from '../../components/groups/GroupSettingsBlock'
 import UserCard from '../../components/users/UserCard'
+import { useAppSelector } from '../../hooks/store'
 import { useGetGroupQuery, useRemoveGroupMutation, useRemoveStudentFromGroupMutation } from '../../services/groupService'
+import { UserRoles } from '../../types/api'
 
-export default function GroupSettings() {
+export default function Group() {
+    const auth = useAppSelector(state => state.auth.payload)
     const navigate = useNavigate()
-    const { id="" } = useParams()
+    const { id = "" } = useParams()
     const { data } = useGetGroupQuery({ id })
 
     const [removeGroup, { isSuccess: isGroupRemoved }] = useRemoveGroupMutation()
@@ -38,27 +41,31 @@ export default function GroupSettings() {
     return (
         <div className="flex-1 space-y-4">
             <BackBlock />
-            <GroupHeaderBlock
-                id={ id }
-                studentsCount={ data?.data.students.length  }
-                onDelete={onDelete}
-            />
-            <div className="bg-white rounded-lg p-4 shadow-md space-y-2">
-                {data && <>
+            {data && auth && <>
+                <GroupHeaderBlock
+                    id={id}
+                    studentsCount={data?.data.students.length}
+                    isAddable={auth.role === UserRoles.ADMIN}
+                    isDeletable={auth.role === UserRoles.ADMIN}
+                    onDelete={onDelete}
+                />
+                <div className="bg-white rounded-lg p-4 shadow-md space-y-2">
                     {data.data.students.length === 0 && <div className="text-xl text-center">В этой группе еще нет студентов</div>}
                     {data.data.students.map(student => <UserCard
-                        key={ student.id }
-                        id={ student.id }
-                        position={ student.role }
-                        FIO={ student.FIO }
-                        group={ student.groupId }
-                        isDeletable={true}
+                        key={student.id}
+                        id={student.id}
+                        position={student.role}
+                        FIO={student.FIO}
+                        group={student.groupId}
+                        isDeletable={auth.role === UserRoles.ADMIN}
                         isEditable={false}
                         onDelete={onStudentRemoveFromGroup}
                     />)}
-                </>}
-            </div>
-            <GroupSettingsBlock />
+                </div>
+                {auth.role === UserRoles.ADMIN &&
+                    <GroupSettingsBlock />
+                }
+            </>}
         </div>
     )
 }

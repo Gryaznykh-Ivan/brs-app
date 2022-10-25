@@ -35,14 +35,17 @@ import UserSettings from './pages/users/UserSettings';
 import User from './pages/User';
 import { UserRoles } from './types/api';
 import Groups from './pages/groups/Groups';
-import GroupSettings from './pages/groups/GroupSettings';
+import Group from './pages/groups/Group';
 import GroupAddStudents from './pages/groups/GroupAddStudents';
 import Subjects from './pages/subjects/Subjects';
+import SubjectsStudentView from './pages/subjects/SubjectsStudentView';
 import SubjectCreate from './pages/subjects/SubjectCreate';
 import Subject from './pages/subjects/Subject';
 import SubjectAddGroup from './pages/subjects/SubjectAddGroups';
 import SubjectGroup from './pages/subjects/SubjectGroup';
+import SubjectGroupStudentView from './pages/subjects/SubjectGroupStudentView';
 import Table from './pages/table/Table';
+import UserGroup from './pages/groups/UserGroup';
 
 function App() {
     const isLoading = useAppSelector(state => state.loader.isLoading)
@@ -82,19 +85,24 @@ function App() {
                     <Route path="brs" element={<PrivateRoute allowedRoles={[UserRoles.STUDENT, UserRoles.HEADMAN]} outlet={<Developing />} />} />
                     <Route path="schedule" element={<PrivateRoute allowedRoles={[UserRoles.STUDENT, UserRoles.HEADMAN]} outlet={<Developing />} />} /> */}
 
-                    <Route path="subjects" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<Subjects />} />} />
-                    <Route path="subjects/create" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<SubjectCreate />} />} />
-                    <Route path="subjects/:id" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<Subject />} />} />
-                    <Route path="subjects/:id/addGroups" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<SubjectAddGroup />} />} />
-                    <Route path="subjects/:subjectId/:groupId" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<SubjectGroup />} />} />
+                    <Route path="subjects" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN, UserRoles.TEACHER]} outlet={<Subjects />} />} />
+                    <Route path="subjects/create" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN, UserRoles.TEACHER]} outlet={<SubjectCreate />} />} />
+                    <Route path="subjects/:id" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN, UserRoles.TEACHER]} outlet={<Subject />} />} />
+                    <Route path="subjects/:id/addGroups" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN, UserRoles.TEACHER]} outlet={<SubjectAddGroup />} />} />
+                    <Route path="subjects/:subjectId/:groupId" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN, UserRoles.TEACHER]} outlet={<SubjectGroup />} />} />
 
                     <Route path="users" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<Users />} />} />
                     <Route path="users/create" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<UserCreate />} />} />
                     <Route path="users/:id" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<UserSettings />} />} />
 
-                    <Route path="groups" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<Groups />} />} />
-                    <Route path="groups/:id" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<GroupSettings />} />} />
-                    <Route path="groups/:id/addStudents" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<GroupAddStudents />} />} />
+                    <Route path="group" element={<PrivateRoute allowedRoles={[UserRoles.STUDENT, UserRoles.HEADMAN]} outlet={<UserGroup />} />} />
+
+                    <Route path="brs" element={<PrivateRoute allowedRoles={[UserRoles.STUDENT, UserRoles.HEADMAN]} outlet={<SubjectsStudentView />} />} />
+                    <Route path="brs/:subjectId" element={<PrivateRoute allowedRoles={[UserRoles.STUDENT, UserRoles.HEADMAN]} outlet={<SubjectGroupStudentView />} />} />
+                    
+                    <Route path="groups" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN, UserRoles.TEACHER]} outlet={<Groups />} />} />
+                    <Route path="groups/:id" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN, UserRoles.TEACHER]} outlet={<Group />} />} />
+                    <Route path="groups/:id/addStudents" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN, UserRoles.TEACHER, UserRoles.HEADMAN]} outlet={<GroupAddStudents />} />} />
 
                     <Route path="settings" element={<PrivateRoute outlet={<Settings />} />} />
 
@@ -105,7 +113,7 @@ function App() {
                     <Route path="" element={<Intro />} />
                 </Route>
                 <Route path="/table" element={<EmptyTemplate />}>
-                    <Route path=":id" element={<PrivateRoute allowedRoles={[UserRoles.ADMIN]} outlet={<Table />} />} />
+                    <Route path=":id" element={<PrivateRoute outlet={<Table />} />} />
                 </Route>
                 
                 <Route path="/auth" element={<AuthTemplate />}>
