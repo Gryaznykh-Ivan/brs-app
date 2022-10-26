@@ -89,7 +89,7 @@ model Column {
 
 model Mark {
   id        String   @id @default(uuid())
-  value     Int      @db.TinyInt
+  value     Int      @db.Int
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId    String
   column    Column   @relation(fields: [columnId], references: [id], onDelete: Cascade, onUpdate: Cascade)
