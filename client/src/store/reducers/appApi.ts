@@ -8,7 +8,7 @@ import {
 import { RootState } from '..'
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: 'http://localhost:2000/',
+    baseUrl: process.env.NODE_ENV === 'production' ? 'https://api.brs-spbti.ru/' : 'http://localhost:2000/',
     prepareHeaders: (headers, { getState }) => {
         const token = (getState() as RootState).auth.token;
         if (token) {
