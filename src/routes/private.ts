@@ -35,7 +35,8 @@ router.delete("/subject/:id/remove", roleFilter([UserRoles.ADMIN, UserRoles.TEAC
 // table page routes
 router.put("/table/create", roleFilter([UserRoles.ADMIN, UserRoles.TEACHER]), tableController.createTable)
 router.get("/table/getNames", roleFilter([UserRoles.ADMIN, UserRoles.TEACHER]), tableController.getTableNames)
-router.get("/table/:id", roleFilter([UserRoles.ADMIN, UserRoles.TEACHER]), tableController.getTableById)
+router.get("/table/getStudentNames", tableController.getStudentTableNames)
+router.get("/table/:id", tableController.getTableById)
 router.put("/table/:id/setMark", roleFilter([UserRoles.ADMIN, UserRoles.TEACHER]), tableController.setMark)
 router.put("/table/:id/addColumn", roleFilter([UserRoles.ADMIN, UserRoles.TEACHER]), tableController.addColumn)
 router.post("/table/:id/changeColumn", roleFilter([UserRoles.ADMIN, UserRoles.TEACHER]), tableController.changeColumnName)

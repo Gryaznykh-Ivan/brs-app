@@ -4,13 +4,13 @@ import { toast } from 'react-toastify'
 import BackBlock from '../../components/BackBlock'
 import TableBlock from '../../components/tables/TableBlock'
 import TableHeaderBlock from '../../components/tables/TableHeaderBlock'
+import TableViewBlock from '../../components/tables/TableViewBlock'
 import { useAppSelector } from '../../hooks/store'
 import { useGetTableByIdQuery, useRemoveTableMutation } from '../../services/tableService'
 import { UserRoles } from '../../types/api'
 
 export default function Table() {
     const { id = "" } = useParams()
-    const auth = useAppSelector(state => state.auth.payload)
     const navigate = useNavigate()
     const { data } = useGetTableByIdQuery({ id })
     const [removeTable, { isSuccess: isRemoveTableSuccess }] = useRemoveTableMutation()
@@ -31,15 +31,15 @@ export default function Table() {
             <div className=" container flex py-4">
                 <div className="flex-1 space-y-4">
                     <BackBlock />
-                    {data && auth && <>
+                    {data && <>
                         <TableHeaderBlock
                             id={data.data.id}
                             title={data.data.title}
                             description={`${ data.data.subjectTitle }: Группа ${data.data.groupId}`}
-                            isButtons={true}
+                            isButtons={false}
                             onDelete={onDelete}
                         />
-                        <TableBlock />
+                        <TableViewBlock />
                     </>}
                 </div>
             </div>

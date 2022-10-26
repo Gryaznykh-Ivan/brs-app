@@ -19,6 +19,30 @@ const getTableNames = async (ctx: Context) => {
     return Ok(ctx, tables)
 }
 
+const getStudentTableNames = async (ctx: Context) => {
+    const { id } = ctx.request.user
+    const { subjectId } = <GetTablesNameRequest>ctx.request.query
+
+    const tables = await prisma.table.findMany({
+        where: {
+            subjectId,
+            group: {
+                students: {
+                    some: {
+                        id
+                    }
+                }
+            }
+        },
+        select: {
+            id: true,
+            title: true
+        }
+    })
+
+    return Ok(ctx, tables)
+}
+
 const getTableById = async (ctx: Context) => {
     const { id } = <GetByIdRequest>ctx.params;
 
@@ -288,6 +312,7 @@ const setMark = async (ctx: Context) => {
 
 export = {
     getTableNames,
+    getStudentTableNames,
     getTableById,
     createTable,
     removeTable,

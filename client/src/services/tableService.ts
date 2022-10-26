@@ -1,11 +1,19 @@
 import { appApi } from "../store/reducers/appApi";
-import { ITableAddColumnRequest, ITableAddColumnResponse, ITableChangeColumnNameRequest, ITableChangeColumnNameResponse, ITableCreateRequest, ITableCreateResponse, ITableGetByIdRequest, ITableGetByIdResponse, ITableGetNamesRequest, ITableGetNamesResponse, ITableRemoveColumnRequest, ITableRemoveColumnResponse, ITableRemoveRequest, ITableSetMarkRequest, ITableSetMarkResponse } from "../types/api";
+import { ITableAddColumnRequest, ITableAddColumnResponse, ITableChangeColumnNameRequest, ITableChangeColumnNameResponse, ITableCreateRequest, ITableCreateResponse, ITableGetByIdRequest, ITableGetByIdResponse, ITableGetNamesRequest, ITableGetNamesResponse, ITableGetStudentNamesRequest, ITableGetStudentNamesResponse, ITableRemoveColumnRequest, ITableRemoveColumnResponse, ITableRemoveRequest, ITableSetMarkRequest, ITableSetMarkResponse } from "../types/api";
 
 export const tableService = appApi.injectEndpoints({
     endpoints: bulider => ({
         getTableNames: bulider.query<ITableGetNamesResponse, ITableGetNamesRequest>({
             query: (credentials) => ({
                 url: `table/getNames`,
+                method: "GET",
+                params: credentials
+            }),
+            providesTags: ['TableNames']
+        }),
+        getStudentTableNames: bulider.query<ITableGetStudentNamesResponse, ITableGetStudentNamesRequest>({
+            query: (credentials) => ({
+                url: `table/getStudentNames`,
                 method: "GET",
                 params: credentials
             }),
@@ -70,6 +78,7 @@ export const tableService = appApi.injectEndpoints({
 export const {
     useGetTableByIdQuery,
     useGetTableNamesQuery,
+    useGetStudentTableNamesQuery,
     useCreateTableMutation,
     useRemoveTableMutation,
     useAddColumnMutation,

@@ -46,6 +46,7 @@ import SubjectGroup from './pages/subjects/SubjectGroup';
 import SubjectGroupStudentView from './pages/subjects/SubjectGroupStudentView';
 import Table from './pages/table/Table';
 import UserGroup from './pages/groups/UserGroup';
+import TableView from './pages/table/TableView';
 
 function App() {
     const isLoading = useAppSelector(state => state.loader.isLoading)
@@ -114,6 +115,7 @@ function App() {
                 </Route>
                 <Route path="/table" element={<EmptyTemplate />}>
                     <Route path=":id" element={<PrivateRoute outlet={<Table />} />} />
+                    <Route path="view/:id" element={<PrivateRoute outlet={<TableView />} />} />
                 </Route>
                 
                 <Route path="/auth" element={<AuthTemplate />}>

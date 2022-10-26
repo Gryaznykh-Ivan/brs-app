@@ -278,6 +278,10 @@ export interface ITableGetNamesRequest {
     subjectId: string;
 }
 
+export interface ITableGetStudentNamesRequest {
+    subjectId: string;
+}
+
 export interface ITableGetByIdRequest {
     id: string;
 }
@@ -348,6 +352,11 @@ export interface ITableGetByIdResponse {
 }
 
 export interface ITableGetNamesResponse {
+    success: boolean;
+    data: ITableName[]
+}
+
+export interface ITableGetStudentNamesResponse {
     success: boolean;
     data: ITableName[]
 }
