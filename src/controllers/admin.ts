@@ -105,9 +105,9 @@ const changeUserSettings = async (ctx: Context) => {
                     name,
                     FIO: `${lastName} ${name}`,
                     lastName: lastName,
-                    birthday: validator.isEmpty(birthday) === false ? new Date(birthday) : undefined,
+                    birthday: validator.isEmpty(birthday) === false ? new Date(birthday) : null,
                     password: validator.isEmpty(password) === false ? await bcrypt.hash(password, 8) : undefined,
-                    groupId: validator.isEmpty(group) === false ? group : undefined,
+                    groupId: validator.isEmpty(group) === false ? group : null,
                     role: role
                 }
             })

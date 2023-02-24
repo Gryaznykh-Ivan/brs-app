@@ -27,11 +27,11 @@ model User {
   FIO       String    @db.VarChar(64)
   birthday  DateTime?
   email     String    @unique @db.VarChar(32)
-  groupId   String?   @db.VarChar(4)
   password  String?   @db.VarChar(64)
   code      String?   @db.VarChar(64)
   role      UserRole  @default(STUDENT)
   group     Group?    @relation(fields: [groupId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  groupId   String?   @db.VarChar(4)
   subjects  Subject[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
