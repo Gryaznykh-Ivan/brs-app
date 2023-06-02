@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 
 interface IProps {
     id: string;
@@ -15,11 +16,14 @@ export default function TableHeaderBlock({ id, title, description, isButtons, on
                 <div className="font-bold text-2xl">{title}</div>
                 <div className="text-tgrey">{description}</div>
             </div>
-            {isButtons &&
-                <div className="flex flex-1 justify-end space-x-2">
-                    <button className="bg-red-600 rounded-lg text-white px-3 h-8 text-sm font-bold leading-8" onClick={() => onDelete(id)}>Удалить таблицу</button>
-                </div>
-            }
+            <div className="flex flex-1 justify-end space-x-2">
+                {isButtons &&
+                    <>
+                        <Link className="bg-green-600 rounded-lg text-white px-3 h-8 text-sm font-bold leading-8" to={`/table/view/${id}`}>Посмотреть</Link>
+                        <button className="bg-red-600 rounded-lg text-white px-3 h-8 text-sm font-bold leading-8" onClick={() => onDelete(id)}>Удалить таблицу</button>
+                    </>
+                }
+            </div>
         </div>
     )
 }
